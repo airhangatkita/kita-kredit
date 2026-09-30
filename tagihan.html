@@ -1,0 +1,3743 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tagihan - KITA KREDIT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-soft: #eff6ff;
+
+        --sidebar: #0f172a;
+        --sidebar-hover: #1e293b;
+
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --bg: #f8fafc;
+        --white: #fff;
+
+        --green: #16a34a;
+        --green-soft: #f0fdf4;
+
+        --orange: #d97706;
+        --orange-soft: #fffbeb;
+
+        --red: #dc2626;
+        --red-soft: #fef2f2;
+
+        --blue-soft: #eff6ff;
+
+        --shadow: 0 8px 30px rgba(15, 23, 42, 0.07);
+        --radius: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      button,
+      input,
+      select {
+        font-family: inherit;
+      }
+
+      /* =========================
+       LAYOUT
+    ========================= */
+
+      .app {
+        min-height: 100vh;
+        display: flex;
+      }
+
+      .sidebar {
+        width: 260px;
+        background: var(--sidebar);
+        color: #cbd5e1;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        transition: 0.25s;
+      }
+
+      .brand {
+        height: 76px;
+        padding: 0 22px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        flex-shrink: 0;
+      }
+
+      .brand-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: var(--primary);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .brand-text strong {
+        display: block;
+        color: #fff;
+        font-size: 17px;
+        letter-spacing: 0.2px;
+      }
+
+      .brand-text span {
+        display: block;
+        color: #94a3b8;
+        font-size: 11px;
+        margin-top: 3px;
+      }
+
+      .menu {
+        padding: 18px 12px;
+        overflow: auto;
+      }
+
+      .menu-title {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #64748b;
+        padding: 8px 12px;
+      }
+
+      .menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 13px;
+        border-radius: 10px;
+        margin: 3px 0;
+        color: #cbd5e1;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+
+      .menu a:hover {
+        background: var(--sidebar-hover);
+        color: #fff;
+      }
+
+      .menu a.active {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 5px 16px rgba(37, 99, 235, 0.25);
+      }
+
+      .menu a i {
+        width: 19px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .sidebar-bottom {
+        margin-top: auto;
+        padding: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        flex-shrink: 0;
+      }
+
+      .logout {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: #cbd5e1;
+        padding: 11px 13px;
+        border-radius: 10px;
+        text-align: left;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .logout:hover {
+        background: var(--sidebar-hover);
+        color: #fff;
+      }
+
+      .main {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+        min-width: 0;
+      }
+
+      /* =========================
+       TOPBAR
+    ========================= */
+
+      .topbar {
+        height: 76px;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .mobile-menu {
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--border);
+        background: #fff;
+        border-radius: 10px;
+        display: none;
+        cursor: pointer;
+        color: var(--text);
+      }
+
+      .page-heading h1 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .page-heading p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .user-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--primary-soft);
+        color: var(--primary);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+      }
+
+      .user-info strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .user-info span {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* =========================
+       CONTENT
+    ========================= */
+
+      .content {
+        padding: 28px 30px 40px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .stat-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .stat-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 17px;
+      }
+
+      .stat-icon.blue {
+        color: var(--primary);
+        background: var(--primary-soft);
+      }
+
+      .stat-icon.green {
+        color: var(--green);
+        background: var(--green-soft);
+      }
+
+      .stat-icon.orange {
+        color: var(--orange);
+        background: var(--orange-soft);
+      }
+
+      .stat-icon.red {
+        color: var(--red);
+        background: var(--red-soft);
+      }
+
+      .stat-info {
+        min-width: 0;
+      }
+
+      .stat-info span {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 5px;
+      }
+
+      .stat-info strong {
+        display: block;
+        font-size: 18px;
+        font-weight: 800;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* =========================
+       CARD / TOOLBAR
+    ========================= */
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .card-title h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .card-title p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-wrap: wrap;
+      }
+
+      .search-box {
+        position: relative;
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 13px;
+      }
+
+      .search-box input {
+        width: 240px;
+        height: 38px;
+        padding: 0 12px 0 36px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        outline: none;
+        font-size: 12px;
+        background: #fff;
+      }
+
+      .search-box input:focus,
+      .filter select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+      }
+
+      .filter select {
+        height: 38px;
+        padding: 0 32px 0 12px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        background: #fff;
+        outline: none;
+        color: var(--text);
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .btn {
+        height: 38px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        padding: 0 13px;
+        background: #fff;
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        transition: 0.2s;
+      }
+
+      .btn:hover {
+        background: #f8fafc;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        border-color: var(--primary-dark);
+      }
+
+      .btn-green {
+        background: var(--green);
+        color: #fff;
+        border-color: var(--green);
+      }
+
+      .btn-green:hover {
+        filter: brightness(0.95);
+      }
+
+      /* =========================
+       TABLE
+    ========================= */
+
+      .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 1050px;
+      }
+
+      th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        text-align: left;
+        padding: 13px 14px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+
+      td {
+        padding: 14px;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px;
+        vertical-align: middle;
+      }
+
+      tbody tr:hover {
+        background: #fafcff;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .customer-name {
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .money {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .due-date {
+        white-space: nowrap;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .status.green {
+        color: var(--green);
+        background: var(--green-soft);
+      }
+
+      .status.orange {
+        color: var(--orange);
+        background: var(--orange-soft);
+      }
+
+      .status.red {
+        color: var(--red);
+        background: var(--red-soft);
+      }
+
+      .status.blue {
+        color: var(--primary);
+        background: var(--primary-soft);
+      }
+
+      .actions {
+        display: flex;
+        gap: 6px;
+      }
+
+      .action-btn {
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        transition: 0.2s;
+      }
+
+      .action-btn:hover {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+        color: var(--text);
+      }
+
+      .action-btn.pay {
+        color: var(--green);
+        background: var(--green-soft);
+        border-color: #dcfce7;
+      }
+
+      .action-btn.pay:hover {
+        background: #dcfce7;
+      }
+
+      .action-btn.print {
+        color: var(--primary);
+        background: var(--primary-soft);
+        border-color: #dbeafe;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 55px 20px;
+        color: var(--muted);
+      }
+
+      .empty i {
+        font-size: 38px;
+        margin-bottom: 12px;
+        color: #cbd5e1;
+      }
+
+      .empty strong {
+        display: block;
+        color: var(--text);
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .empty span {
+        font-size: 12px;
+      }
+
+      /* =========================
+       MODAL
+    ========================= */
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        z-index: 2000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .modal.show {
+        display: flex;
+      }
+
+      .modal-box {
+        width: min(700px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
+      }
+
+      .modal-header {
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+
+      .modal-header h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .modal-close {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        background: #f1f5f9;
+        color: var(--muted);
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .detail-item {
+        padding: 13px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #f8fafc;
+      }
+
+      .detail-item span {
+        display: block;
+        font-size: 10px;
+        color: var(--muted);
+        margin-bottom: 5px;
+      }
+
+      .detail-item strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .schedule-title {
+        font-size: 13px;
+        font-weight: 800;
+        margin: 0 0 10px;
+      }
+
+      .schedule-table {
+        min-width: 0;
+      }
+
+      .schedule-table th,
+      .schedule-table td {
+        padding: 10px;
+      }
+
+      .modal-footer {
+        padding: 15px 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      /* =========================
+   EDIT FORM
+========================= */
+
+      .edit-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .form-group.full {
+        grid-column: 1 / -1;
+      }
+
+      .form-group label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        min-height: 38px;
+        padding: 9px 11px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        outline: none;
+        background: #fff;
+        color: var(--text);
+        font-size: 12px;
+        font-family: inherit;
+      }
+
+      .form-group textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+      }
+
+      .form-help {
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .edit-section {
+        margin-top: 20px;
+      }
+
+      .edit-section-title {
+        font-size: 13px;
+        font-weight: 800;
+        margin: 0 0 10px;
+      }
+
+      .schedule-edit-table {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .schedule-edit-table input {
+        width: 100%;
+        height: 34px;
+        padding: 6px 8px;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        font-size: 11px;
+        outline: none;
+      }
+
+      .schedule-edit-table input:focus {
+        border-color: var(--primary);
+      }
+
+      .schedule-edit-table th,
+      .schedule-edit-table td {
+        padding: 8px;
+      }
+
+      @media (max-width: 560px) {
+        .edit-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .form-group.full {
+          grid-column: auto;
+        }
+      }
+      /* =========================
+       PRINT
+    ========================= */
+
+      #printArea {
+        position: fixed;
+        left: -100000px;
+        top: 0;
+        width: 800px;
+        background: #fff;
+        color: #111;
+        padding: 35px;
+      }
+
+      .receipt-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 2px solid #111;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+      }
+
+      .receipt-title {
+        font-size: 22px;
+        font-weight: 800;
+      }
+
+      .receipt-subtitle {
+        font-size: 11px;
+        color: #555;
+        margin-top: 4px;
+      }
+
+      .receipt-number {
+        text-align: right;
+        font-size: 12px;
+      }
+
+      .receipt-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 30px;
+        margin-bottom: 20px;
+        font-size: 12px;
+      }
+
+      .receipt-info div {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px dotted #ccc;
+        padding-bottom: 5px;
+      }
+
+      .receipt-info span {
+        color: #555;
+      }
+
+      .receipt-info strong {
+        text-align: right;
+      }
+
+      .receipt-table {
+        width: 100%;
+        min-width: 0;
+        border-collapse: collapse;
+      }
+
+      .receipt-table th,
+      .receipt-table td {
+        border: 1px solid #bbb;
+        padding: 8px;
+        font-size: 11px;
+      }
+
+      .receipt-table th {
+        background: #f1f5f9;
+        color: #111;
+      }
+
+      .receipt-total {
+        margin-top: 20px;
+        margin-left: auto;
+        width: 300px;
+      }
+
+      .receipt-total div {
+        display: flex;
+        justify-content: space-between;
+        padding: 7px 0;
+        font-size: 12px;
+      }
+
+      .receipt-total .grand {
+        border-top: 2px solid #111;
+        font-size: 14px;
+        font-weight: 800;
+        padding-top: 10px;
+      }
+
+      /* =========================
+       RESPONSIVE
+    ========================= */
+
+      @media (max-width: 1100px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 800px) {
+        .sidebar {
+          position: fixed;
+          width: 260px;
+          height: auto;
+          padding: 0;
+          transform: translateX(-100%);
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .app {
+          display: flex;
+        }
+
+        .main {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .mobile-menu {
+          display: grid;
+          place-items: center;
+        }
+
+        .topbar {
+          padding: 0 18px;
+        }
+
+        .content {
+          padding: 20px 18px 35px;
+        }
+
+        .user-info {
+          display: none;
+        }
+
+        .stats {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .search-box input {
+          width: 200px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .card-header {
+          align-items: stretch;
+        }
+
+        .toolbar {
+          width: 100%;
+        }
+
+        .search-box {
+          width: 100%;
+        }
+
+        .search-box input {
+          width: 100%;
+        }
+
+        .filter {
+          flex: 1;
+        }
+
+        .filter select {
+          width: 100%;
+        }
+
+        .toolbar .btn {
+          flex: 1;
+        }
+
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .modal {
+          padding: 10px;
+        }
+
+        .modal-box {
+          max-height: 95vh;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- =========================
+         SIDEBAR
+    ========================== -->
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+
+          <div class="brand-text">
+            <strong>KITA KREDIT</strong>
+            <span>Sistem Manajemen Kredit</span>
+          </div>
+        </div>
+
+        <nav class="menu">
+          <div class="menu-title">Menu Utama</div>
+
+          <a href="dashboard.html">
+            <i class="fa-solid fa-gauge-high"></i>
+            Dashboard
+          </a>
+
+          <a href="pelanggan.html">
+            <i class="fa-solid fa-users"></i>
+            Pelanggan
+          </a>
+
+          <a href="produk.html">
+            <i class="fa-solid fa-box"></i>
+            Produk & Stok
+          </a>
+
+          <a href="transaksi.html">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            Transaksi Kredit
+          </a>
+
+          <a href="pembayaran.html">
+            <i class="fa-solid fa-money-bill-wave"></i>
+            Pembayaran
+          </a>
+
+          <a href="tagihan.html" class="active">
+            <i class="fa-solid fa-calendar-check"></i>
+            Tagihan
+          </a>
+
+          <a href="laporan.html">
+            <i class="fa-solid fa-chart-column"></i>
+            Laporan
+          </a>
+
+          <a href="pengeluaran.html">
+            <i class="fa-solid fa-receipt"></i>
+            Pengeluaran
+          </a>
+
+          <div class="menu-title" style="margin-top: 12px">Sistem</div>
+
+          <a href="pengaturan.html">
+            <i class="fa-solid fa-gear"></i>
+            Pengaturan
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <button class="logout" onclick="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Keluar
+          </button>
+        </div>
+      </aside>
+
+      <!-- =========================
+         MAIN
+    ========================== -->
+      <main class="main">
+        <!-- TOPBAR -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <button
+              class="mobile-menu"
+              id="mobileMenu"
+              type="button"
+              aria-label="Buka menu"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="page-heading">
+              <h1>Tagihan</h1>
+              <p>Kelola tagihan dan jadwal angsuran pelanggan</p>
+            </div>
+          </div>
+
+          <div class="user-box">
+            <div class="user-avatar">
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="user-info">
+              <strong id="topUsername">Admin</strong>
+              <span>Administrator</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- CONTENT -->
+        <section class="content">
+          <!-- STATISTIK -->
+          <div class="stats">
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-file-invoice"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>Tagihan Aktif</span>
+                <strong id="statAktif">0</strong>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon green">
+                <i class="fa-solid fa-money-bill-wave"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>Total Piutang</span>
+                <strong id="statPiutang">Rp 0</strong>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon orange">
+                <i class="fa-solid fa-calendar-day"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>Jatuh Tempo Hari Ini</span>
+                <strong id="statHariIni">0</strong>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon red">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>Terlambat</span>
+                <strong id="statTerlambat">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE CARD -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <h2>Daftar Tagihan</h2>
+                <p>Daftar transaksi kredit dan jadwal pembayaran pelanggan</p>
+              </div>
+
+              <div class="toolbar">
+                <div class="search-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input
+                    type="text"
+                    id="search"
+                    placeholder="Cari pelanggan / transaksi..."
+                    autocomplete="off"
+                  />
+                </div>
+
+                <div class="filter">
+                  <select id="jenisTagihan">
+                    <option value="all">All Tagihan</option>
+                    <option value="harian">Harian</option>
+                    <option value="mingguan">Mingguan</option>
+                    <option value="bulanan">Bulanan</option>
+                  </select>
+                </div>
+
+                <div class="filter">
+                  <select id="filter">
+                    <option value="semua">Semua Status</option>
+                    <option value="belum">Belum Jatuh Tempo</option>
+                    <option value="hariini">Jatuh Tempo Hari Ini</option>
+                    <option value="terlambat">Terlambat</option>
+                    <option value="lunas">Lunas</option>
+                  </select>
+                </div>
+
+                <button class="btn" type="button" onclick="load()">
+                  <i class="fa-solid fa-rotate"></i>
+                  Refresh
+                </button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No. Transaksi</th>
+                    <th>Pelanggan</th>
+                    <th>Jenis Tagihan</th>
+                    <th>Total Kredit</th>
+                    <th>DP (Down Paymen)</th>
+                    <th>Terbayar</th>
+                    <th>Sisa Tagihan</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- =========================
+       MODAL DETAIL
+  ========================== -->
+    <div class="modal" id="modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 id="modalTitle">Detail Tagihan</h3>
+
+          <button
+            class="modal-close"
+            type="button"
+            onclick="closeModal()"
+            aria-label="Tutup"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="modal-body" id="modalBody"></div>
+
+        <div class="modal-footer">
+          <button class="btn" type="button" onclick="closeModal()">
+            Tutup
+          </button>
+
+          <button class="btn btn-primary" type="button" onclick="printBill()">
+            <i class="fa-solid fa-print"></i>
+            Cetak
+          </button>
+
+          <button class="btn btn-green" type="button" onclick="savePDF()">
+            <i class="fa-solid fa-file-pdf"></i>
+            PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================
+   MODAL EDIT TRANSAKSI
+========================== -->
+    <div class="modal" id="editModal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 id="editModalTitle">Edit Data Transaksi</h3>
+
+          <button
+            class="modal-close"
+            type="button"
+            onclick="closeEditModal()"
+            aria-label="Tutup"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form id="editForm">
+            <input type="hidden" id="editTxId" />
+
+            <div class="edit-grid">
+              <div class="form-group">
+                <label for="editNoTransaksi"> No. Transaksi </label>
+
+                <input type="text" id="editNoTransaksi" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="editNama"> Nama Pelanggan </label>
+
+                <input type="text" id="editNama" required />
+              </div>
+
+              <div class="form-group">
+                <label for="editNik"> NIK </label>
+
+                <input type="text" id="editNik" />
+              </div>
+
+              <div class="form-group">
+                <label for="editNoHp"> No. HP </label>
+
+                <input type="text" id="editNoHp" />
+              </div>
+
+              <div class="form-group full">
+                <label for="editAlamat"> Alamat </label>
+
+                <textarea
+                  id="editAlamat"
+                  placeholder="Alamat pelanggan"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="editTanggalMulai"> Tanggal Mulai Kredit </label>
+
+                <input type="date" id="editTanggalMulai" required />
+
+                <span class="form-help">
+                  Perubahan tanggal mulai akan menyesuaikan jadwal angsuran.
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="editTenor"> Tenor </label>
+
+                <select id="editTenor">
+                  <option value="1">1 Bulan</option>
+                  <option value="2">2 Bulan</option>
+                  <option value="3">3 Bulan</option>
+                  <option value="4">4 Bulan</option>
+                  <option value="5">5 Bulan</option>
+                  <option value="6">6 Bulan</option>
+                  <option value="7">7 Bulan</option>
+                  <option value="8">8 Bulan</option>
+                  <option value="9">9 Bulan</option>
+                  <option value="10">10 Bulan</option>
+                  <option value="11">11 Bulan</option>
+                  <option value="12">12 Bulan</option>
+                  <option value="18">18 Bulan</option>
+                  <option value="24">24 Bulan</option>
+                  <option value="36">36 Bulan</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="editTotalKredit"> Total Kredit </label>
+
+                <input type="number" id="editTotalKredit" min="0" />
+              </div>
+
+              <div class="form-group">
+                <label for="editDP"> DP / Uang Muka </label>
+
+                <input type="number" id="editDP" min="0" />
+              </div>
+            </div>
+
+            <div class="edit-section">
+              <h4 class="edit-section-title">Jadwal Angsuran</h4>
+
+              <div class="table-wrap">
+                <table class="schedule-edit-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Jatuh Tempo</th>
+                      <th>Nominal</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="editScheduleBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn" type="button" onclick="closeEditModal()">
+            Batal
+          </button>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            onclick="saveEditTransaction()"
+          >
+            <i class="fa-solid fa-floppy-disk"></i>
+            Simpan Perubahan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================
+   MODAL PASSWORD EDIT
+========================== -->
+    <div class="modal" id="passwordModal">
+      <div class="modal-box" style="max-width: 420px">
+        <div class="modal-header">
+          <h3>
+            <i class="fa-solid fa-lock"></i>
+            Verifikasi Edit
+          </h3>
+
+          <button
+            class="modal-close"
+            type="button"
+            onclick="closePasswordModal()"
+            aria-label="Tutup"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div style="text-align: center; padding: 10px 10px 20px">
+            <div
+              style="
+                width: 60px;
+                height: 60px;
+                margin: 0 auto 15px;
+                border-radius: 50%;
+                background: #eff6ff;
+                color: #2563eb;
+                display: grid;
+                place-items: center;
+                font-size: 24px;
+              "
+            >
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <strong style="display: block; font-size: 15px; margin-bottom: 6px">
+              Edit Data Transaksi
+            </strong>
+
+            <span
+              style="
+                display: block;
+                color: #64748b;
+                font-size: 12px;
+                line-height: 1.6;
+              "
+            >
+              Masukkan password untuk mengubah data pelanggan dan transaksi
+              kredit.
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="editPassword"> Password Edit Data </label>
+
+            <div style="position: relative">
+              <input
+                type="password"
+                id="editPassword"
+                placeholder="Masukkan password"
+                autocomplete="off"
+                style="padding-right: 42px"
+                onkeydown="if (event.key === 'Enter') verifyEditPassword();"
+              />
+
+              <button
+                type="button"
+                onclick="toggleEditPassword()"
+                style="
+                  position: absolute;
+                  right: 8px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  border: 0;
+                  background: transparent;
+                  color: #64748b;
+                  cursor: pointer;
+                  width: 30px;
+                  height: 30px;
+                "
+                title="Tampilkan password"
+              >
+                <i class="fa-solid fa-eye" id="passwordEye"></i>
+              </button>
+            </div>
+
+            <span
+              id="passwordError"
+              style="
+                display: none;
+                color: #dc2626;
+                font-size: 11px;
+                margin-top: 6px;
+              "
+            >
+              Password salah.
+            </span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn" type="button" onclick="closePasswordModal()">
+            Batal
+          </button>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            onclick="verifyEditPassword()"
+          >
+            <i class="fa-solid fa-unlock"></i>
+            Verifikasi
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================
+       PRINT AREA
+  ========================== -->
+    <div id="printArea"></div>
+
+    <script>
+      /* =========================================================
+       STORAGE
+    ========================================================= */
+
+      const TXKEY = "transaksi";
+      const PAYKEY = "pembayaran";
+
+      let transactions = [];
+
+      /* =========================================================
+       MOBILE SIDEBAR
+    ========================================================= */
+
+      const sidebar = document.getElementById("sidebar");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      if (mobileMenu) {
+        mobileMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+          sidebar.classList.toggle("open");
+        });
+      }
+
+      document.addEventListener("click", function (e) {
+        if (window.innerWidth > 800) return;
+
+        if (
+          sidebar.classList.contains("open") &&
+          !sidebar.contains(e.target) &&
+          !mobileMenu.contains(e.target)
+        ) {
+          sidebar.classList.remove("open");
+        }
+      });
+
+      /* =========================================================
+       USERNAME
+    ========================================================= */
+
+      const savedUsername = localStorage.getItem("username") || "Admin";
+
+      const topUsername = document.getElementById("topUsername");
+
+      if (topUsername) {
+        topUsername.textContent = savedUsername;
+      }
+
+      /* =========================================================
+       HELPER
+    ========================================================= */
+
+      function rupiah(value) {
+        const number = Number(value) || 0;
+
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          maximumFractionDigits: 0,
+        }).format(number);
+      }
+
+      function dateKey(value) {
+        if (!value) return "";
+
+        const d = new Date(value);
+
+        if (Number.isNaN(d.getTime())) {
+          return String(value).slice(0, 10);
+        }
+
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+
+        return `${y}-${m}-${day}`;
+      }
+
+      function today() {
+        const d = new Date();
+
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+
+        return `${y}-${m}-${day}`;
+      }
+
+      function fmt(value) {
+        if (!value) return "-";
+
+        const d = new Date(value);
+
+        if (Number.isNaN(d.getTime())) {
+          return String(value);
+        }
+
+        return d.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      function esc(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function num(value) {
+        const n = Number(value);
+        return Number.isFinite(n) ? n : 0;
+      }
+
+      function read(key) {
+        try {
+          const value = JSON.parse(localStorage.getItem(key) || "[]");
+
+          return Array.isArray(value) ? value : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      /* =========================================================
+       DP COMPATIBILITY / MIGRATION
+       Membaca DP transaksi lama dari beberapa nama field.
+       Jika field DP tidak ada, coba hitung dari totalHarga - pokokKredit.
+      ========================================================= */
+
+      function getDP(t) {
+        if (!t) return 0;
+
+        const candidates = [
+          t.dp,
+          t.uangMuka,
+          t.downPayment,
+          t.downpayment,
+          t.uang_muka,
+          t.DP,
+          t.UangMuka,
+        ];
+
+        for (const value of candidates) {
+          if (value !== undefined && value !== null && value !== "") {
+            const n = num(value);
+            if (n > 0) return n;
+          }
+        }
+
+        // Backup untuk transaksi lama: DP = harga sebelum kredit - pokok kredit
+        const harga =
+          num(t.totalHarga) ||
+          num(t.hargaJual) ||
+          num(t.total) ||
+          num(t.grandTotal);
+
+        const pokok = num(t.pokokKredit);
+
+        if (harga > 0 && pokok >= 0 && harga >= pokok) {
+          const hasil = harga - pokok;
+          if (hasil > 0) return hasil;
+        }
+
+        return 0;
+      }
+
+      // Migrasi otomatis: menyimpan kembali DP transaksi lama ke field standar `dp`.
+      function migrateDP() {
+        const data = read(TXKEY);
+        let changed = false;
+
+        data.forEach((t) => {
+          const dp = getDP(t);
+          if (dp > 0 && num(t.dp) !== dp) {
+            t.dp = dp;
+            changed = true;
+          }
+        });
+
+        if (changed) {
+          localStorage.setItem(TXKEY, JSON.stringify(data));
+        }
+
+        return data;
+      }
+
+      /* =========================================================
+       TRANSACTION CALCULATION
+    ========================================================= */
+
+      /*
+       * =========================================================
+       * LOGIKA KEUANGAN TRANSAKSI
+       * =========================================================
+       *
+       * ATURAN BISNIS:
+       * 1. t.totalKredit adalah NOMINAL KREDIT BERSIH, yaitu nominal
+       *    yang sudah dikurangi DP.
+       * 2. DP hanya ditampilkan sebagai informasi uang muka.
+       * 3. DP TIDAK dikurangi lagi dari totalKredit.
+       * 4. DP TIDAK dihitung sebagai pembayaran angsuran.
+       * 5. Sisa tagihan = totalKredit (setelah DP) - pembayaran angsuran.
+       * 6. Nominal jadwal angsuran sudah merupakan nominal tagihan bersih
+       *    setelah DP, sehingga tidak boleh dipotong DP lagi.
+       */
+
+      function getNetCredit(t) {
+        if (!t) return 0;
+
+        // Prioritas totalKredit karena pada aplikasi ini nilainya
+        // sudah merupakan nominal setelah DP.
+        if (
+          t.totalKredit !== undefined &&
+          t.totalKredit !== null &&
+          t.totalKredit !== ""
+        ) {
+          return Math.max(0, num(t.totalKredit));
+        }
+
+        return Math.max(
+          0,
+          num(t.total) ||
+            num(t.grandTotal) ||
+            num(t.nilaiKredit) ||
+            num(t.pokokKredit),
+        );
+      }
+
+      function isDownPaymentPayment(p) {
+        if (!p) return false;
+
+        const jenis = String(
+          p.jenis ||
+            p.type ||
+            p.tipe ||
+            p.kategori ||
+            p.category ||
+            p.keterangan ||
+            "",
+        ).toLowerCase();
+
+        return (
+          p.isDP === true ||
+          p.isDp === true ||
+          p.isDownPayment === true ||
+          jenis.includes("dp") ||
+          jenis.includes("down payment") ||
+          jenis.includes("uang muka") ||
+          jenis.includes("uangmuka")
+        );
+      }
+
+      function paid(t) {
+        if (!t) return 0;
+
+        /*
+         * totalBayar pada transaksi diperlakukan sebagai TOTAL PEMBAYARAN
+         * ANGSURAN, bukan DP. DP sudah berada di luar tagihan.
+         */
+        if (
+          t.totalBayar !== undefined &&
+          t.totalBayar !== null &&
+          t.totalBayar !== ""
+        ) {
+          return Math.max(0, num(t.totalBayar));
+        }
+
+        const pembayaran = read(PAYKEY);
+
+        const txId = t.id || t.idTransaksi || t.noTransaksi || t.nomorTransaksi;
+
+        let total = 0;
+
+        pembayaran.forEach((p) => {
+          const pTx =
+            p.idTransaksi || p.transaksiId || p.transactionId || p.noTransaksi;
+
+          if (String(pTx) !== String(txId)) return;
+
+          // DP tidak boleh masuk ke total pembayaran tagihan.
+          if (isDownPaymentPayment(p)) return;
+
+          total +=
+            num(p.jumlah) ||
+            num(p.nominal) ||
+            num(p.totalBayar) ||
+            num(p.amount);
+        });
+
+        return Math.max(0, total);
+      }
+
+      function remain(t) {
+        /*
+         * Jangan memakai t.sisaTagihan lama secara langsung karena nilainya
+         * mungkin berasal dari logika lama yang masih mengurangkan DP.
+         * Hitung ulang dari nominal kredit bersih.
+         */
+        const totalKreditBersih = getNetCredit(t);
+        const totalAngsuranTerbayar = paid(t);
+
+        return Math.max(0, totalKreditBersih - totalAngsuranTerbayar);
+      }
+
+      function getSchedules(t) {
+        let schedules =
+          t.jadwal ||
+          t.jadwalAngsuran ||
+          t.angsuran ||
+          t.schedule ||
+          t.schedules ||
+          t.paymentSchedule ||
+          [];
+
+        if (
+          !Array.isArray(schedules) &&
+          schedules &&
+          typeof schedules === "object"
+        ) {
+          schedules =
+            schedules.items ||
+            schedules.data ||
+            schedules.jadwal ||
+            schedules.jadwalAngsuran ||
+            [];
+        }
+
+        if (!Array.isArray(schedules)) schedules = [];
+
+        const readNumber = (item, keys) => {
+          for (const key of keys) {
+            if (
+              item[key] !== undefined &&
+              item[key] !== null &&
+              item[key] !== ""
+            ) {
+              const value = num(item[key]);
+              if (value !== 0 || String(item[key]).trim() === "0") return value;
+            }
+          }
+          return 0;
+        };
+
+        const readDate = (item) =>
+          item.tanggal ||
+          item.tgl ||
+          item.tanggalJatuhTempo ||
+          item.tglJatuhTempo ||
+          item.jatuhTempo ||
+          item.dueDate ||
+          item.due_date ||
+          item.date ||
+          item.tanggalBayar ||
+          item.tglBayar;
+
+        return schedules
+          .map((item, index) => {
+            if (!item || typeof item !== "object") return null;
+
+            const tanggal = readDate(item);
+            const nominal = readNumber(item, [
+              "nominal",
+              "nominalJatuhTempo",
+              "nominalAngsuran",
+              "jumlahAngsuran",
+              "jumlah",
+              "angsuran",
+              "amount",
+              "nilai",
+              "cicilan",
+              "nilaiAngsuran",
+              "tagihan",
+              "jumlahTagihan",
+              "nominalTagihan",
+              "payment",
+              "paymentAmount",
+            ]);
+
+            const status = String(
+              item.status || item.statusPembayaran || item.paymentStatus || "",
+            )
+              .toLowerCase()
+              .trim();
+
+            const lunas =
+              item.lunas === true ||
+              item.isLunas === true ||
+              item.paid === true ||
+              item.terbayar === true ||
+              status === "lunas" ||
+              status === "paid" ||
+              status === "terbayar" ||
+              status === "dibayar";
+
+            return {
+              ...item,
+              _index: index,
+              _tanggal: tanggal,
+              _nominal: nominal,
+              _lunas: lunas,
+            };
+          })
+          .filter((item) => item && item._tanggal);
+      }
+
+      function nextDue(t) {
+        const schedules = getSchedules(t)
+          .filter((item) => !item._lunas)
+          .sort((a, b) => {
+            return dateKey(a._tanggal).localeCompare(dateKey(b._tanggal));
+          });
+
+        return schedules[0] || null;
+      }
+
+      function billStatus(t) {
+        if (remain(t) <= 0) {
+          return ["Lunas", "green"];
+        }
+
+        const due = nextDue(t);
+
+        if (!due) {
+          return ["Belum Jatuh Tempo", "blue"];
+        }
+
+        const dueDate = dateKey(due._tanggal);
+        const current = today();
+
+        if (dueDate < current) {
+          return ["Terlambat", "red"];
+        }
+
+        if (dueDate === current) {
+          return ["Jatuh Tempo Hari Ini", "orange"];
+        }
+
+        return ["Belum Jatuh Tempo", "blue"];
+      }
+
+      /* =========================================================
+   JENIS TAGIHAN
+========================================================= */
+
+      function getJenisTagihan(t) {
+        if (!t) return "";
+
+        const value = t.jenisAngsuran;
+        t.jenisTagihan ||
+          t.jenis_tagihan ||
+          t.tipeTagihan ||
+          t.tipe_tagihan ||
+          t.jenis ||
+          t.tipe ||
+          t.frekuensi ||
+          t.periode ||
+          t.interval ||
+          t.caraBayar ||
+          "";
+
+        const text = String(value).trim().toLowerCase();
+
+        if (
+          text.includes("harian") ||
+          text.includes("hari") ||
+          text === "daily"
+        ) {
+          return "harian";
+        }
+
+        if (
+          text.includes("mingguan") ||
+          text.includes("minggu") ||
+          text === "weekly"
+        ) {
+          return "mingguan";
+        }
+
+        if (
+          text.includes("bulanan") ||
+          text.includes("bulan") ||
+          text === "monthly"
+        ) {
+          return "bulanan";
+        }
+
+        return "";
+      }
+
+      /* =========================================================
+       LOAD
+    ========================================================= */
+
+      function load() {
+        transactions = migrateDP();
+
+        updateStats();
+        render();
+      }
+
+      /* =========================================================
+       STATISTICS
+    ========================================================= */
+
+      function updateStats() {
+        let aktif = 0;
+        let piutang = 0;
+        let hariIni = 0;
+        let terlambat = 0;
+
+        transactions.forEach((t) => {
+          const sisa = remain(t);
+
+          if (sisa > 0) {
+            aktif++;
+            piutang += sisa;
+          }
+
+          const status = billStatus(t);
+
+          if (status[0] === "Jatuh Tempo Hari Ini") {
+            hariIni++;
+          }
+
+          if (status[0] === "Terlambat") {
+            terlambat++;
+          }
+        });
+
+        document.getElementById("statAktif").textContent =
+          aktif.toLocaleString("id-ID");
+
+        document.getElementById("statPiutang").textContent = rupiah(piutang);
+
+        document.getElementById("statHariIni").textContent =
+          hariIni.toLocaleString("id-ID");
+
+        document.getElementById("statTerlambat").textContent =
+          terlambat.toLocaleString("id-ID");
+      }
+
+      /* =========================================================
+       RENDER
+    ========================================================= */
+
+      function render() {
+        const tbody = document.getElementById("tableBody");
+
+        const keyword = document
+          .getElementById("search")
+          .value.trim()
+          .toLowerCase();
+
+        const filter = document.getElementById("filter").value;
+        const jenisTagihan = document.getElementById("jenisTagihan").value;
+
+        let data = transactions.filter((t) => {
+          const no = t.noTransaksi || t.nomorTransaksi || t.kode || t.id || "";
+
+          const nama =
+            t.namaPelanggan || t.nama || t.customerName || t.pelanggan || "";
+
+          const text = [no, nama].join(" ").toLowerCase();
+
+          // PENCARIAN NAMA / TRANSAKSI
+          if (keyword && !text.includes(keyword)) {
+            return false;
+          }
+          // FILTER JENIS TAGIHAN
+          if (jenisTagihan !== "all") {
+            const jenis = getJenisTagihan(t);
+
+            if (jenis !== jenisTagihan) {
+              return false;
+            }
+          }
+
+          // FILTER STATUS
+          const status = billStatus(t)[0];
+
+          if (filter === "belum") {
+            return status === "Belum Jatuh Tempo";
+          }
+
+          if (filter === "hariini") {
+            return status === "Jatuh Tempo Hari Ini";
+          }
+
+          if (filter === "terlambat") {
+            return status === "Terlambat";
+          }
+
+          if (filter === "lunas") {
+            return status === "Lunas";
+          }
+
+          return true;
+        });
+
+        if (!data.length) {
+          tbody.innerHTML = `
+          <tr>
+            <td colspan="10">
+              <div class="empty">
+                <i class="fa-regular fa-folder-open"></i>
+                <strong>Tidak ada data tagihan</strong>
+                <span>
+                  Belum ada data yang sesuai dengan pencarian atau filter.
+                </span>
+              </div>
+            </td>
+          </tr>
+        `;
+
+          return;
+        }
+
+        tbody.innerHTML = data
+          .map((t, index) => {
+            const no =
+              t.noTransaksi || t.nomorTransaksi || t.kode || t.id || "-";
+
+            const nama =
+              t.namaPelanggan || t.nama || t.customerName || t.pelanggan || "-";
+
+            const jenis = getJenisTagihan(t);
+
+            const total = getNetCredit(t);
+
+            const dp = getDP(t);
+
+            const terbayar = paid(t);
+
+            const sisa = remain(t);
+
+            const due = nextDue(t);
+
+            const status = billStatus(t);
+
+            const dueDate = due ? fmt(due._tanggal) : "-";
+
+            const id =
+              t.id ||
+              t.idTransaksi ||
+              t.noTransaksi ||
+              t.nomorTransaksi ||
+              index;
+
+            return `
+            <tr>
+
+              <td>
+                <strong>${esc(no)}</strong>
+              </td>
+
+              <td>
+                <div class="customer-name">
+                  ${esc(nama)}
+                </div>
+              </td>
+
+              
+              <td>
+                <span class="status blue">
+                  ${
+                    jenis === "harian"
+                      ? "Harian"
+                      : jenis === "mingguan"
+                        ? "Mingguan"
+                        : jenis === "bulanan"
+                          ? "Bulanan"
+                          : "-"
+                  }
+                </span>
+              </td>
+
+            
+
+              <td>
+                <span class="money">
+                  ${rupiah(total)}
+                </span>
+              </td>
+
+              <td>
+                <span class="money">
+                  ${rupiah(dp)}
+                </span>
+              </td>
+
+              <td>
+                <span class="money">
+                  ${rupiah(terbayar)}
+                </span>
+              </td>
+
+              <td>
+                <span class="money">
+                  ${rupiah(sisa)}
+                </span>
+              </td>
+
+              <td>
+                <span class="due-date">
+                  ${dueDate}
+                </span>
+              </td>
+
+              <td>
+                <span class="status ${status[1]}">
+                  ${esc(status[0])}
+                </span>
+              </td>
+
+              <td>
+                <div class="actions">
+
+                  <button
+                    class="action-btn"
+                    type="button"
+                    title="Detail"
+                    onclick='detail(${JSON.stringify(id)})'
+                  >
+
+
+    <i class="fa-solid fa-eye"></i>
+  </button>
+
+  <button
+    class="action-btn"
+    type="button"
+    title="Edit Data"
+    onclick='requestEditPassword(${JSON.stringify(id)})'
+  >
+    <i class="fa-solid fa-pen"></i>
+  </button>
+
+ 
+
+  <button
+    class="action-btn print"
+    type="button"
+    title="Cetak"
+    onclick='detail(${JSON.stringify(id)}); setTimeout(printBill, 100)'
+  >
+    <i class="fa-solid fa-print"></i>
+  </button>
+
+</div>
+
+
+              </td>
+
+            </tr>
+          `;
+          })
+          .join("");
+      }
+
+      /* =========================================================
+       FIND TRANSACTION
+    ========================================================= */
+
+      function findTx(id) {
+        return transactions.find((t) => {
+          const txId =
+            t.id || t.idTransaksi || t.noTransaksi || t.nomorTransaksi;
+
+          return String(txId) === String(id);
+        });
+      }
+
+      /* =========================================================
+   PASSWORD EDIT
+========================================================= */
+
+      /*
+       * GANTI PASSWORD DI SINI
+       */
+      const EDIT_PASSWORD = "KITAKREDIT123";
+
+      let pendingEditId = null;
+
+      /* =========================================================
+   REQUEST EDIT
+========================================================= */
+
+      function requestEditPassword(id) {
+        const tx = findTx(id);
+
+        if (!tx) {
+          alert("Data transaksi tidak ditemukan.");
+          return;
+        }
+
+        pendingEditId = id;
+
+        const passwordInput = document.getElementById("editPassword");
+
+        const error = document.getElementById("passwordError");
+
+        passwordInput.value = "";
+
+        error.style.display = "none";
+
+        document.getElementById("passwordModal").classList.add("show");
+
+        setTimeout(() => {
+          passwordInput.focus();
+        }, 100);
+      }
+
+      /* =========================================================
+   VERIFY PASSWORD
+========================================================= */
+
+      function verifyEditPassword() {
+        const password = document.getElementById("editPassword").value;
+
+        const error = document.getElementById("passwordError");
+
+        if (password !== EDIT_PASSWORD) {
+          error.textContent = "Password salah. Silakan coba lagi.";
+
+          error.style.display = "block";
+
+          document.getElementById("editPassword").select();
+
+          return;
+        }
+
+        /*
+         * Password benar
+         */
+
+        error.style.display = "none";
+
+        const id = pendingEditId;
+
+        pendingEditId = null;
+
+        closePasswordModal();
+
+        /*
+         * Buka form edit
+         */
+
+        setTimeout(() => {
+          editTransaction(id);
+        }, 150);
+      }
+
+      /* =========================================================
+   CLOSE PASSWORD MODAL
+========================================================= */
+
+      function closePasswordModal() {
+        document.getElementById("passwordModal").classList.remove("show");
+
+        document.getElementById("editPassword").value = "";
+
+        document.getElementById("passwordError").style.display = "none";
+
+        pendingEditId = null;
+      }
+
+      /* =========================================================
+   SHOW / HIDE PASSWORD
+========================================================= */
+
+      function toggleEditPassword() {
+        const input = document.getElementById("editPassword");
+
+        const eye = document.getElementById("passwordEye");
+
+        if (input.type === "password") {
+          input.type = "text";
+
+          eye.className = "fa-solid fa-eye-slash";
+        } else {
+          input.type = "password";
+
+          eye.className = "fa-solid fa-eye";
+        }
+      }
+
+      /* =========================================================
+   CLOSE WHEN CLICK OUTSIDE
+========================================================= */
+
+      document
+        .getElementById("passwordModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closePasswordModal();
+          }
+        });
+
+      /* =========================================================
+   EDIT TRANSACTION
+========================================================= */
+
+      function editTransaction(id) {
+        const t = findTx(id);
+
+        if (!t) {
+          alert("Data transaksi tidak ditemukan.");
+          return;
+        }
+
+        const txId = t.id || t.idTransaksi || t.noTransaksi || t.nomorTransaksi;
+
+        const nama =
+          t.namaPelanggan || t.nama || t.customerName || t.pelanggan || "";
+
+        const nik = t.nik || t.NIK || t.customerNik || "";
+
+        const noHp =
+          t.noHp ||
+          t.noHP ||
+          t.telepon ||
+          t.telephone ||
+          t.phone ||
+          t.nomorHp ||
+          "";
+
+        const alamat = t.alamat || t.address || "";
+
+        const tanggalMulai =
+          t.tanggalMulaiKredit ||
+          t.tglMulaiKredit ||
+          t.tanggalMulai ||
+          t.tglMulai ||
+          t.startDate ||
+          "";
+
+        const tenor =
+          num(t.tenor) || num(t.jumlahTenor) || num(t.lamaKredit) || 1;
+
+        const total = getNetCredit(t);
+
+        const dp = getDP(t);
+
+        document.getElementById("editTxId").value = txId;
+
+        document.getElementById("editNoTransaksi").value =
+          t.noTransaksi || t.nomorTransaksi || t.kode || txId || "";
+
+        document.getElementById("editNama").value = nama;
+
+        document.getElementById("editNik").value = nik;
+
+        document.getElementById("editNoHp").value = noHp;
+
+        document.getElementById("editAlamat").value = alamat;
+
+        document.getElementById("editTanggalMulai").value =
+          dateKey(tanggalMulai);
+
+        document.getElementById("editTenor").value = tenor;
+
+        document.getElementById("editTotalKredit").value = total;
+
+        document.getElementById("editDP").value = dp;
+
+        renderEditSchedules(t);
+
+        document.getElementById("editModal").classList.add("show");
+      }
+
+      /* =========================================================
+   RENDER EDIT SCHEDULE
+========================================================= */
+
+      function renderEditSchedules(t) {
+        const tbody = document.getElementById("editScheduleBody");
+
+        const schedules = getSchedules(t);
+
+        if (!schedules.length) {
+          tbody.innerHTML = `
+      <tr>
+        <td colspan="4">
+          <div class="empty" style="padding:25px 10px;">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            <strong>Belum ada jadwal angsuran</strong>
+            <span>
+              Jadwal angsuran belum tersedia.
+            </span>
+          </div>
+        </td>
+      </tr>
+    `;
+
+          return;
+        }
+
+        tbody.innerHTML = schedules
+          .map((item, index) => {
+            const tanggal = dateKey(item._tanggal);
+
+            const status = item._lunas ? "lunas" : "belum";
+
+            return `
+        <tr>
+
+          <td>
+            <strong>${index + 1}</strong>
+          </td>
+
+          <td>
+            <input
+              type="date"
+              class="edit-jadwal-tanggal"
+              data-index="${index}"
+              value="${esc(tanggal)}"
+            />
+          </td>
+
+          <td>
+            <input
+              type="number"
+              class="edit-jadwal-nominal"
+              data-index="${index}"
+              min="0"
+              value="${item._nominal}"
+            />
+          </td>
+
+          <td>
+            <select
+              class="edit-jadwal-status"
+              data-index="${index}"
+            >
+              <option
+                value="belum"
+                ${status === "belum" ? "selected" : ""}
+              >
+                Belum Bayar
+              </option>
+
+              <option
+                value="lunas"
+                ${status === "lunas" ? "selected" : ""}
+              >
+                Lunas
+              </option>
+            </select>
+          </td>
+
+        </tr>
+      `;
+          })
+          .join("");
+      }
+
+      /* =========================================================
+   SAVE EDIT
+========================================================= */
+
+      function saveEditTransaction() {
+        const txId = document.getElementById("editTxId").value;
+
+        const data = read(TXKEY);
+
+        const index = data.findIndex((t) => {
+          const id = t.id || t.idTransaksi || t.noTransaksi || t.nomorTransaksi;
+
+          return String(id) === String(txId);
+        });
+
+        if (index === -1) {
+          alert("Data transaksi tidak ditemukan.");
+          return;
+        }
+
+        const oldTransaction = data[index];
+
+        /* =========================
+     DATA FORM
+  ========================= */
+
+        const nama = document.getElementById("editNama").value.trim();
+
+        const nik = document.getElementById("editNik").value.trim();
+
+        const noHp = document.getElementById("editNoHp").value.trim();
+
+        const alamat = document.getElementById("editAlamat").value.trim();
+
+        const tanggalMulai = document.getElementById("editTanggalMulai").value;
+
+        const tenor = num(document.getElementById("editTenor").value);
+
+        const totalKredit = num(
+          document.getElementById("editTotalKredit").value,
+        );
+
+        const dp = num(document.getElementById("editDP").value);
+
+        if (!nama) {
+          alert("Nama pelanggan wajib diisi.");
+          return;
+        }
+
+        if (!tanggalMulai) {
+          alert("Tanggal mulai kredit wajib diisi.");
+          return;
+        }
+
+        if (totalKredit < 0) {
+          alert("Total kredit tidak valid.");
+          return;
+        }
+
+        if (dp < 0) {
+          alert("DP tidak valid.");
+          return;
+        }
+
+        /*
+         * totalKredit adalah nominal BERSIH SETELAH DP.
+         * DP tidak dipotong lagi dari totalKredit.
+         */
+
+        /* =========================
+     AMBIL JADWAL LAMA
+  ========================= */
+
+        let schedules =
+          oldTransaction.jadwal ||
+          oldTransaction.jadwalAngsuran ||
+          oldTransaction.angsuran ||
+          oldTransaction.schedule ||
+          [];
+
+        if (!Array.isArray(schedules)) {
+          schedules = [];
+        }
+
+        /*
+         * Salin agar tidak merusak referensi
+         */
+        schedules = schedules.map((item) => ({
+          ...item,
+        }));
+
+        const tanggalInputs = document.querySelectorAll(".edit-jadwal-tanggal");
+
+        const nominalInputs = document.querySelectorAll(".edit-jadwal-nominal");
+
+        const statusInputs = document.querySelectorAll(".edit-jadwal-status");
+
+        schedules.forEach((item, index) => {
+          const tanggalInput = tanggalInputs[index];
+
+          const nominalInput = nominalInputs[index];
+
+          const statusInput = statusInputs[index];
+
+          if (tanggalInput) {
+            const tanggal = tanggalInput.value;
+
+            /*
+             * Pertahankan nama field tanggal
+             * yang digunakan transaksi sebelumnya.
+             */
+            if (item.tanggal !== undefined) {
+              item.tanggal = tanggal;
+            } else if (item.tgl !== undefined) {
+              item.tgl = tanggal;
+            } else if (item.jatuhTempo !== undefined) {
+              item.jatuhTempo = tanggal;
+            } else if (item.dueDate !== undefined) {
+              item.dueDate = tanggal;
+            } else {
+              item.tanggal = tanggal;
+            }
+          }
+
+          if (nominalInput) {
+            const nominal = num(nominalInput.value);
+
+            if (item.nominal !== undefined) {
+              item.nominal = nominal;
+            } else if (item.jumlah !== undefined) {
+              item.jumlah = nominal;
+            } else if (item.angsuran !== undefined) {
+              item.angsuran = nominal;
+            } else if (item.amount !== undefined) {
+              item.amount = nominal;
+            } else {
+              item.nominal = nominal;
+            }
+          }
+
+          if (statusInput) {
+            const lunas = statusInput.value === "lunas";
+
+            item.lunas = lunas;
+
+            item.status = lunas ? "Lunas" : "Belum Bayar";
+          }
+        });
+
+        /* =========================
+     UPDATE TRANSAKSI
+  ========================= */
+
+        const updated = {
+          ...oldTransaction,
+
+          namaPelanggan: nama,
+
+          nik: nik,
+
+          noHp: noHp,
+
+          alamat: alamat,
+
+          tanggalMulaiKredit: tanggalMulai,
+
+          tglMulaiKredit: tanggalMulai,
+
+          tenor: tenor,
+
+          totalKredit: totalKredit,
+
+          dp: dp,
+
+          jadwal: schedules,
+        };
+
+        /*
+         * Jika struktur transaksi menggunakan
+         * nama field tertentu, pertahankan juga.
+         */
+
+        if (oldTransaction.nama !== undefined) {
+          updated.nama = nama;
+        }
+
+        if (oldTransaction.customerName !== undefined) {
+          updated.customerName = nama;
+        }
+
+        if (oldTransaction.pelanggan !== undefined) {
+          updated.pelanggan = nama;
+        }
+
+        if (oldTransaction.NIK !== undefined) {
+          updated.NIK = nik;
+        }
+
+        if (oldTransaction.noHP !== undefined) {
+          updated.noHP = noHp;
+        }
+
+        if (oldTransaction.telepon !== undefined) {
+          updated.telepon = noHp;
+        }
+
+        if (oldTransaction.tanggalMulai !== undefined) {
+          updated.tanggalMulai = tanggalMulai;
+        }
+
+        if (oldTransaction.jumlahTenor !== undefined) {
+          updated.jumlahTenor = tenor;
+        }
+
+        if (oldTransaction.lamaKredit !== undefined) {
+          updated.lamaKredit = tenor;
+        }
+
+        /*
+         * Simpan perubahan.
+         */
+
+        data[index] = updated;
+
+        localStorage.setItem(TXKEY, JSON.stringify(data));
+
+        /*
+         * Sinkronisasi ke data pelanggan
+         */
+        syncCustomer(updated);
+
+        /*
+         * Refresh data halaman
+         */
+        transactions = migrateDP();
+
+        updateStats();
+
+        render();
+
+        closeEditModal();
+
+        /*
+         * Jika detail sebelumnya terbuka,
+         * buka kembali detail transaksi terbaru.
+         */
+        setTimeout(() => {
+          detail(txId);
+        }, 100);
+
+        alert("Data transaksi berhasil diperbarui dan disinkronkan.");
+      }
+
+      /* =========================================================
+   SYNC CUSTOMER
+========================================================= */
+
+      function syncCustomer(transaction) {
+        const customerKey = "pelanggan";
+
+        const customers = read(customerKey);
+
+        if (!customers.length) {
+          return;
+        }
+
+        const customerId =
+          transaction.idPelanggan ||
+          transaction.pelangganId ||
+          transaction.customerId;
+
+        const nama =
+          transaction.namaPelanggan ||
+          transaction.nama ||
+          transaction.customerName ||
+          transaction.pelanggan ||
+          "";
+
+        const nik =
+          transaction.nik || transaction.NIK || transaction.customerNik || "";
+
+        const noHp =
+          transaction.noHp ||
+          transaction.noHP ||
+          transaction.telepon ||
+          transaction.phone ||
+          "";
+
+        const alamat = transaction.alamat || transaction.address || "";
+
+        let foundIndex = -1;
+
+        if (customerId) {
+          foundIndex = customers.findIndex((customer) => {
+            const id =
+              customer.id ||
+              customer.idPelanggan ||
+              customer.pelangganId ||
+              customer.customerId;
+
+            return String(id) === String(customerId);
+          });
+        }
+
+        /*
+         * Jika tidak ditemukan berdasarkan ID,
+         * cari berdasarkan NIK.
+         */
+
+        if (foundIndex === -1 && nik) {
+          foundIndex = customers.findIndex((customer) => {
+            const customerNik =
+              customer.nik || customer.NIK || customer.customerNik;
+
+            return String(customerNik) === String(nik);
+          });
+        }
+
+        /*
+         * Jika tetap tidak ditemukan,
+         * cari berdasarkan nama.
+         */
+
+        if (foundIndex === -1 && nama) {
+          foundIndex = customers.findIndex((customer) => {
+            const customerName =
+              customer.nama ||
+              customer.namaPelanggan ||
+              customer.customerName ||
+              customer.pelanggan;
+
+            return (
+              String(customerName).trim().toLowerCase() ===
+              String(nama).trim().toLowerCase()
+            );
+          });
+        }
+
+        if (foundIndex === -1) {
+          return;
+        }
+
+        const customer = {
+          ...customers[foundIndex],
+        };
+
+        if (customer.nama !== undefined) {
+          customer.nama = nama;
+        }
+
+        if (customer.namaPelanggan !== undefined) {
+          customer.namaPelanggan = nama;
+        }
+
+        if (customer.customerName !== undefined) {
+          customer.customerName = nama;
+        }
+
+        if (customer.nik !== undefined) {
+          customer.nik = nik;
+        }
+
+        if (customer.NIK !== undefined) {
+          customer.NIK = nik;
+        }
+
+        if (customer.noHp !== undefined) {
+          customer.noHp = noHp;
+        }
+
+        if (customer.noHP !== undefined) {
+          customer.noHP = noHp;
+        }
+
+        if (customer.telepon !== undefined) {
+          customer.telepon = noHp;
+        }
+
+        if (customer.alamat !== undefined) {
+          customer.alamat = alamat;
+        }
+
+        customers[foundIndex] = customer;
+
+        localStorage.setItem(customerKey, JSON.stringify(customers));
+      }
+
+      /* =========================================================
+   CLOSE EDIT MODAL
+========================================================= */
+
+      function closeEditModal() {
+        document.getElementById("editModal").classList.remove("show");
+      }
+
+      /* Klik luar modal edit */
+
+      document
+        .getElementById("editModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeEditModal();
+          }
+        });
+
+      /* =========================================================
+       DETAIL
+    ========================================================= */
+
+      function detail(id) {
+        const t = findTx(id);
+
+        if (!t) {
+          alert("Data transaksi tidak ditemukan.");
+          return;
+        }
+
+        const nama =
+          t.namaPelanggan || t.nama || t.customerName || t.pelanggan || "-";
+
+        const no = t.noTransaksi || t.nomorTransaksi || t.kode || t.id || "-";
+
+        const total = num(t.totalKredit) || num(t.total) || num(t.grandTotal);
+
+        const dp = getDP(t);
+
+        const terbayar = paid(t);
+
+        const sisa = remain(t);
+
+        const status = billStatus(t);
+        /*NOMINAL*/
+        const due = nextDue(t);
+        // Gunakan nominal yang tersimpan pada jadwal angsuran berikutnya.
+        // Jangan menghitung ulang dari total kredit/tenor karena dapat berbeda
+        // dari nominal angsuran sebenarnya (bunga/admin/dll).
+        /*
+         * Nominal jadwal SUDAH NET setelah DP.
+         * Jangan mengurangi DP lagi di sini.
+         */
+        const nominalJatuhTempo =
+          due && Number.isFinite(Number(due._nominal))
+            ? Math.max(0, Number(due._nominal))
+            : 0;
+        const tanggalJatuhTempo = due ? fmt(due._tanggal) : "-";
+
+        const schedules = getSchedules(t);
+
+        document.getElementById("modalTitle").textContent =
+          `Detail Tagihan - ${no}`;
+
+        let scheduleHTML = "";
+
+        if (schedules.length) {
+          scheduleHTML = `
+          <h4 class="schedule-title">
+            Jadwal Angsuran
+          </h4>
+
+          <div class="table-wrap">
+
+            <table class="schedule-table">
+
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Jatuh Tempo</th>
+                  <th>Nominal</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                ${schedules
+                  .map((item, i) => {
+                    const statusText = item._lunas
+                      ? "Lunas"
+                      : dateKey(item._tanggal) < today()
+                        ? "Terlambat"
+                        : dateKey(item._tanggal) === today()
+                          ? "Jatuh Tempo Hari Ini"
+                          : "Belum Jatuh Tempo";
+
+                    const statusClass = item._lunas
+                      ? "green"
+                      : statusText === "Terlambat"
+                        ? "red"
+                        : statusText === "Jatuh Tempo Hari Ini"
+                          ? "orange"
+                          : "blue";
+
+                    return `
+                      <tr>
+
+                        <td>
+                          ${i + 1}
+                        </td>
+
+                        <td>
+                          ${fmt(item._tanggal)}
+                        </td>
+
+                        <td>
+                          ${rupiah(item._nominal)}
+                        </td>
+
+                        <td>
+                          <span class="status ${statusClass}">
+                            ${statusText}
+                          </span>
+                        </td>
+
+                      </tr>
+                    `;
+                  })
+                  .join("")}
+
+              
+              </tbody>
+
+            </table>
+
+          </div>
+        `;
+        } else {
+          scheduleHTML = `
+          <div class="empty" style="padding:30px 10px;">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            <strong>Belum ada jadwal angsuran</strong>
+            <span>Jadwal pembayaran belum tersedia pada transaksi ini.</span>
+          </div>
+        `;
+        }
+
+        document.getElementById("modalBody").innerHTML = `
+
+        <div class="detail-grid">
+
+          <div class="detail-item">
+            <span>No. Transaksi</span>
+            <strong>${esc(no)}</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Status</span>
+            <strong>
+              <span class="status ${status[1]}">
+                ${esc(status[0])}
+              </span>
+            </strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Pelanggan</span>
+            <strong>${esc(nama)}</strong>
+          </div>
+
+          
+
+          <div class="detail-item">
+            <span>Total Kredit</span>
+            <strong>${rupiah(total)}</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>DP / Uang Muka</span>
+            <strong>${rupiah(dp)}</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Terbayar</span>
+            <strong>${rupiah(terbayar)}</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Sisa Tagihan</span>
+            <strong>${rupiah(sisa)}</strong>
+          </div>
+
+          <div class="detail-item">
+  <span>Jatuh Tempo Berikutnya</span>
+  <strong>
+    ${tanggalJatuhTempo}
+  </strong>
+</div>
+
+<div class="detail-item">
+  <span>Jumlah Tagihan Selanjutnya</span>
+  <strong>
+    ${rupiah(nominalJatuhTempo)}
+  </strong>
+</div>
+          
+
+        </div>
+
+        ${scheduleHTML}
+
+      `;
+
+        document.getElementById("modal").classList.add("show");
+
+        makePrint(t);
+      }
+
+      /* =========================================================
+       CLOSE MODAL
+    ========================================================= */
+
+      function closeModal() {
+        document.getElementById("modal").classList.remove("show");
+      }
+
+      document.getElementById("modal").addEventListener("click", function (e) {
+        if (e.target === this) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeModal();
+        }
+      });
+
+      /* =========================================================
+       RECEIPT HTML
+    ========================================================= */
+
+      function receiptHTML(t) {
+        const nama =
+          t.namaPelanggan || t.nama || t.customerName || t.pelanggan || "-";
+
+        const nik = t.nik || t.NIK || t.customerNik || "-";
+
+        const no = t.noTransaksi || t.nomorTransaksi || t.kode || t.id || "-";
+
+        const total = num(t.totalKredit) || num(t.total) || num(t.grandTotal);
+
+        const dp = getDP(t);
+
+        const terbayar = paid(t);
+
+        const sisa = remain(t);
+
+        const status = billStatus(t);
+
+        const schedules = getSchedules(t);
+
+        const due = nextDue(t);
+        const nominalJatuhTempo = due ? num(due._nominal) : "-";
+        const tanggalJatuhTempo = due ? fmt(due._tanggal) : "-";
+
+        return `
+
+        <div class="receipt-header">
+
+          <div>
+            <div class="receipt-title">
+              KITA KREDIT
+            </div>
+
+            <div class="receipt-subtitle">
+              Sistem Manajemen Kredit
+            </div>
+          </div>
+
+          <div class="receipt-number">
+            <strong>TAGIHAN</strong><br>
+            No: ${esc(no)}<br>
+            Dicetak: ${fmt(new Date())}
+          </div>
+
+        </div>
+
+
+        <div class="receipt-info">
+
+          <div>
+            <span>Pelanggan</span>
+            <strong>${esc(nama)}</strong>
+          </div>
+
+          <div>
+            <span>NIK</span>
+            <strong>${esc(nik)}</strong>
+          </div>
+
+          <div>
+            <span>Status</span>
+            <strong>${esc(status[0])}</strong>
+          </div>
+
+          <div>
+            <span>Jatuh Tempo</span>
+            <strong>
+              ${nextDue(t) ? fmt(nextDue(t)._tanggal) : "-"}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <table class="receipt-table">
+
+          <thead>
+            <tr>
+              <th style="width:50px;">No</th>
+              <th>Jatuh Tempo</th>
+              <th>Nominal</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${
+              schedules.length
+                ? schedules
+                    .map((item, i) => {
+                      const statusText = item._lunas
+                        ? "Lunas"
+                        : dateKey(item._tanggal) < today()
+                          ? "Terlambat"
+                          : dateKey(item._tanggal) === today()
+                            ? "Jatuh Tempo Hari Ini"
+                            : "Belum Jatuh Tempo";
+
+                      return `
+                      <tr>
+                        <td>${i + 1}</td>
+                        <td>${fmt(item._tanggal)}</td>
+                        <td>${rupiah(item._nominal)}</td>
+                        <td>${statusText}</td>
+                      </tr>
+                    `;
+                    })
+                    .join("")
+                : `
+                  <tr>
+                    <td colspan="4" style="text-align:center;">
+                      Belum ada jadwal angsuran
+                    </td>
+                  </tr>
+                `
+            }
+
+          </tbody>
+
+        </table>
+
+
+        <div class="receipt-total">
+
+          <div>
+            <span>Total Kredit</span>
+            <strong>${rupiah(total)}</strong>
+          </div>
+
+          <div>
+            <span>DP / Uang Muka</span>
+            <strong>${rupiah(dp)}</strong>
+          </div>
+
+          <div>
+            <span>Terbayar</span>
+            <strong>${rupiah(terbayar)}</strong>
+          </div>
+
+          <div class="grand">
+            <span>Sisa Tagihan</span>
+            <strong>${rupiah(sisa)}</strong>
+          </div>
+
+          <div class="detail-item" style="border: 2px solid #f59e0b; background: #fffbeb;">
+  <span style="color: #b45309;">Nominal Jatuh Tempo</span>
+  <strong style="color: #b45309; font-size: 18px;">
+    ${rupiah(nominalJatuhTempo)}
+  </strong>
+</div>
+
+        </div>
+
+      `;
+      }
+
+      /* =========================================================
+       MAKE PRINT
+    ========================================================= */
+
+      function makePrint(t) {
+        const area = document.getElementById("printArea");
+
+        area.innerHTML = receiptHTML(t);
+
+        area.dataset.txId =
+          t.id || t.idTransaksi || t.noTransaksi || t.nomorTransaksi || "";
+      }
+
+      /* =========================================================
+       PRINT
+    ========================================================= */
+
+      function printBill() {
+        const area = document.getElementById("printArea");
+
+        if (!area.innerHTML.trim()) {
+          return;
+        }
+
+        const printWindow = window.open("", "_blank", "width=900,height=700");
+
+        if (!printWindow) {
+          alert(
+            "Popup diblokir browser. Silakan izinkan popup untuk mencetak.",
+          );
+          return;
+        }
+
+        printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+
+          <meta charset="UTF-8">
+
+          <title>Tagihan KITA KREDIT</title>
+
+          <style>
+
+            * {
+              box-sizing: border-box;
+            }
+
+            body {
+              margin: 0;
+              padding: 30px;
+              font-family: Arial, sans-serif;
+              color: #111;
+              background: #fff;
+            }
+
+            .receipt-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              border-bottom: 2px solid #111;
+              padding-bottom: 15px;
+              margin-bottom: 20px;
+            }
+
+            .receipt-title {
+              font-size: 22px;
+              font-weight: 800;
+            }
+
+            .receipt-subtitle {
+              font-size: 11px;
+              color: #555;
+              margin-top: 4px;
+            }
+
+            .receipt-number {
+              text-align: right;
+              font-size: 12px;
+            }
+
+            .receipt-info {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 8px 30px;
+              margin-bottom: 20px;
+              font-size: 12px;
+            }
+
+            .receipt-info div {
+              display: flex;
+              justify-content: space-between;
+              gap: 10px;
+              border-bottom: 1px dotted #ccc;
+              padding-bottom: 5px;
+            }
+
+            .receipt-info span {
+              color: #555;
+            }
+
+            .receipt-info strong {
+              text-align: right;
+            }
+
+            .receipt-table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+
+            .receipt-table th,
+            .receipt-table td {
+              border: 1px solid #bbb;
+              padding: 8px;
+              font-size: 11px;
+            }
+
+            .receipt-table th {
+              background: #f1f5f9;
+            }
+
+            .receipt-total {
+              margin-top: 20px;
+              margin-left: auto;
+              width: 300px;
+            }
+
+            .receipt-total div {
+              display: flex;
+              justify-content: space-between;
+              padding: 7px 0;
+              font-size: 12px;
+            }
+
+            .receipt-total .grand {
+              border-top: 2px solid #111;
+              font-size: 14px;
+              font-weight: 800;
+              padding-top: 10px;
+            }
+
+            @media print {
+              body {
+                padding: 0;
+              }
+            }
+
+          </style>
+
+        </head>
+
+        <body>
+
+          ${area.innerHTML}
+
+          <script>
+            window.onload = function() {
+              window.print();
+            };
+          <\/script>
+
+        </body>
+        </html>
+      `);
+
+        printWindow.document.close();
+      }
+
+      /* =========================================================
+       SAVE PDF
+    ========================================================= */
+
+      async function savePDF() {
+        const area = document.getElementById("printArea");
+
+        if (!area.innerHTML.trim()) {
+          return;
+        }
+
+        if (
+          typeof html2canvas === "undefined" ||
+          typeof window.jspdf === "undefined"
+        ) {
+          alert("Library PDF belum siap. Silakan coba lagi.");
+          return;
+        }
+
+        const oldLeft = area.style.left;
+
+        area.style.left = "0";
+        area.style.position = "absolute";
+
+        try {
+          const canvas = await html2canvas(area, {
+            scale: 2,
+            backgroundColor: "#ffffff",
+            useCORS: true,
+          });
+
+          const imgData = canvas.toDataURL("image/png");
+
+          const { jsPDF } = window.jspdf;
+
+          const pdf = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
+          });
+
+          const pageWidth = pdf.internal.pageSize.getWidth();
+
+          const pageHeight = pdf.internal.pageSize.getHeight();
+
+          const margin = 10;
+
+          const availableWidth = pageWidth - margin * 2;
+
+          const imageHeight = (canvas.height * availableWidth) / canvas.width;
+
+          let heightLeft = imageHeight;
+
+          let position = margin;
+
+          pdf.addImage(
+            imgData,
+            "PNG",
+            margin,
+            position,
+            availableWidth,
+            imageHeight,
+          );
+
+          heightLeft -= pageHeight - margin * 2;
+
+          while (heightLeft > 0) {
+            position = -(imageHeight - heightLeft) + margin;
+
+            pdf.addPage();
+
+            pdf.addImage(
+              imgData,
+              "PNG",
+              margin,
+              position,
+              availableWidth,
+              imageHeight,
+            );
+
+            heightLeft -= pageHeight - margin * 2;
+          }
+
+          const txId = area.dataset.txId || "tagihan";
+
+          pdf.save(`Tagihan-${txId}.pdf`);
+        } catch (error) {
+          console.error(error);
+
+          alert("Gagal membuat PDF. Silakan coba lagi.");
+        } finally {
+          area.style.left = oldLeft;
+          area.style.position = "fixed";
+        }
+      }
+
+      /* =========================================================
+       SEARCH & FILTER
+    ========================================================= */
+
+      document.getElementById("search").addEventListener("input", render);
+      document
+        .getElementById("jenisTagihan")
+        .addEventListener("change", render);
+      document.getElementById("filter").addEventListener("change", render);
+
+      /* =========================================================
+       LOGOUT
+    ========================================================= */
+
+      function logout() {
+        const yakin = confirm("Apakah Anda yakin ingin keluar?");
+
+        if (!yakin) return;
+
+        /*
+         * Hapus session login jika aplikasi
+         * menggunakan localStorage untuk session.
+         */
+        localStorage.removeItem("isLoggedIn");
+
+        location.href = "login.html";
+      }
+
+      /* =========================================================
+       INITIAL LOAD
+    ========================================================= */
+
+      load();
+    </script>
+  </body>
+</html>

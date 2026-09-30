@@ -1,0 +1,3284 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Pengaturan - KITA KREDIT</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary: #0b5ed7;
+        --primary-dark: #084298;
+        --primary-light: #eaf2ff;
+
+        --success: #198754;
+        --success-light: #e9f7ef;
+
+        --warning: #f59f00;
+        --warning-light: #fff4d6;
+
+        --danger: #dc3545;
+        --danger-light: #fdecef;
+
+        --purple: #6f42c1;
+        --purple-light: #f0eafa;
+
+        --text: #1f2937;
+        --muted: #6b7280;
+        --bg: #f5f7fb;
+        --white: #ffffff;
+        --border: #e5e7eb;
+
+        --shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+        --radius: 16px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font-family: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.65;
+      }
+
+      /* =========================
+         SIDEBAR
+      ========================= */
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100vh;
+        background: var(--white);
+        border-right: 1px solid var(--border);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+      }
+
+      .brand {
+        height: 76px;
+        display: flex;
+        align-items: center;
+        padding: 0 22px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+
+      .brand-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 11px;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .brand-text {
+        min-width: 0;
+      }
+
+      .brand-text h2 {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--primary-dark);
+        line-height: 1.1;
+      }
+
+      .brand-text span {
+        font-size: 10px;
+        color: var(--muted);
+        display: block;
+        margin-top: 3px;
+      }
+
+      .menu {
+        padding: 18px 12px;
+        overflow-y: auto;
+        flex: 1;
+      }
+
+      .menu-title {
+        font-size: 10px;
+        text-transform: uppercase;
+        color: #9ca3af;
+        font-weight: 700;
+        padding: 0 12px;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+      }
+
+      .menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 45px;
+        padding: 0 13px;
+        margin-bottom: 4px;
+        color: #4b5563;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+
+      .menu a i {
+        width: 20px;
+        text-align: center;
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+
+      .menu a:hover {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .menu a.active {
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+      }
+
+      .sidebar-bottom {
+        padding: 14px;
+        border-top: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+
+      .logout-btn {
+        width: 100%;
+        border: 0;
+        background: var(--danger-light);
+        color: var(--danger);
+        padding: 11px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .logout-btn:hover {
+        background: #f9d9de;
+      }
+
+      /* =========================
+         MAIN
+      ========================= */
+
+      .main {
+        margin-left: 250px;
+        min-height: 100vh;
+      }
+
+      .topbar {
+        height: 76px;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+        position: sticky;
+        top: 0;
+        z-index: 900;
+      }
+
+      .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        border: 0;
+        background: transparent;
+        font-size: 20px;
+        color: var(--text);
+        padding: 5px;
+      }
+
+      .page-title h1 {
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .page-title p {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 3px;
+      }
+
+      .user-area {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+
+      .user-info {
+        text-align: right;
+      }
+
+      .user-info strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .user-info span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .user-avatar {
+        width: 39px;
+        height: 39px;
+        background: var(--primary-light);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .content {
+        padding: 28px;
+        max-width: 1450px;
+        margin: auto;
+      }
+
+      /* =========================
+         INFO
+      ========================= */
+
+      .info-box {
+        background: var(--primary-light);
+        border: 1px solid #cfe0ff;
+        border-radius: var(--radius);
+        padding: 17px 19px;
+        display: flex;
+        gap: 13px;
+        margin-bottom: 22px;
+      }
+
+      .info-icon {
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+        border-radius: 9px;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .info-box h3 {
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+
+      .info-box p {
+        font-size: 12px;
+        color: #4b5563;
+        line-height: 1.6;
+      }
+
+      /* =========================
+         CARDS
+      ========================= */
+
+      .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+        margin-bottom: 22px;
+      }
+
+      .card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .card-header-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .blue-icon {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .green-icon {
+        background: var(--success-light);
+        color: var(--success);
+      }
+
+      .purple-icon {
+        background: var(--purple-light);
+        color: var(--purple);
+      }
+
+      .orange-icon {
+        background: var(--warning-light);
+        color: var(--warning);
+      }
+
+      .card-header h2 {
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .card-header p {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+
+      .card-body {
+        padding: 22px;
+      }
+
+      /* =========================
+         FORM
+      ========================= */
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 17px;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-group.full {
+        grid-column: 1 / -1;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 7px;
+        color: #374151;
+      }
+
+      .form-label span {
+        color: var(--danger);
+      }
+
+      .form-control {
+        width: 100%;
+        height: 43px;
+        border: 1px solid #d9dee7;
+        border-radius: 9px;
+        padding: 0 12px;
+        font-size: 13px;
+        color: var(--text);
+        background: white;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      textarea.form-control {
+        height: 90px;
+        padding: 11px 12px;
+        resize: vertical;
+        line-height: 1.5;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.09);
+      }
+
+      .form-control::placeholder {
+        color: #9ca3af;
+      }
+
+      .input-group {
+        position: relative;
+      }
+
+      .input-prefix,
+      .input-suffix {
+        position: absolute;
+        top: 0;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        color: var(--muted);
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .input-prefix {
+        left: 12px;
+      }
+
+      .input-suffix {
+        right: 12px;
+      }
+
+      .has-prefix {
+        padding-left: 36px;
+      }
+
+      .has-suffix {
+        padding-right: 42px;
+      }
+
+      /* =========================
+         BUTTON
+      ========================= */
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+        padding-top: 5px;
+      }
+
+      .btn {
+        height: 40px;
+        border: 0;
+        border-radius: 9px;
+        padding: 0 16px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+      }
+
+      .btn-secondary {
+        background: #f3f4f6;
+        color: #4b5563;
+      }
+
+      .btn-secondary:hover {
+        background: #e5e7eb;
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: #157347;
+      }
+
+      .btn-danger {
+        background: var(--danger-light);
+        color: var(--danger);
+      }
+
+      .btn-danger:hover {
+        background: #f9d9de;
+      }
+
+      /* =========================
+         LOGO UPLOAD
+      ========================= */
+
+      .logo-upload {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-preview {
+        width: 72px;
+        height: 72px;
+        border: 1px dashed #cfd5df;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #fafafa;
+        color: #9ca3af;
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+
+      .logo-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .upload-info {
+        flex: 1;
+      }
+
+      .upload-info p {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+
+      .upload-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .upload-btn:hover {
+        background: #dceaff;
+      }
+
+      .upload-btn input {
+        display: none;
+      }
+
+      /* =========================
+         TENOR
+      ========================= */
+
+      .tenor-section {
+        margin-top: 22px;
+      }
+
+      .tenor-top {
+        padding: 19px 22px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+
+      .tenor-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .tenor-title-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: var(--purple-light);
+        color: var(--purple);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .tenor-title h2 {
+        font-size: 15px;
+      }
+
+      .tenor-title p {
+        color: var(--muted);
+        font-size: 11px;
+        margin-top: 3px;
+      }
+
+      .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+
+      th {
+        background: #f8fafc;
+        color: #6b7280;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        font-weight: 700;
+        padding: 13px 15px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+
+      td {
+        padding: 14px 15px;
+        border-bottom: 1px solid #eef0f3;
+        font-size: 12px;
+        vertical-align: middle;
+      }
+
+      tbody tr:hover {
+        background: #fafcff;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 8px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      .badge-daily {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .badge-weekly {
+        background: var(--success-light);
+        color: var(--success);
+      }
+
+      .badge-monthly {
+        background: var(--purple-light);
+        color: var(--purple);
+      }
+
+      .badge-active {
+        background: var(--success-light);
+        color: var(--success);
+      }
+
+      .badge-inactive {
+        background: #f3f4f6;
+        color: #6b7280;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 5px;
+      }
+
+      .icon-btn {
+        width: 31px;
+        height: 31px;
+        border: 0;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        transition: background 0.2s;
+      }
+
+      .edit-btn {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .edit-btn:hover {
+        background: #dceaff;
+      }
+
+      .delete-btn {
+        background: var(--danger-light);
+        color: var(--danger);
+      }
+
+      .delete-btn:hover {
+        background: #f9d9de;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: var(--muted);
+      }
+
+      .empty-state i {
+        font-size: 34px;
+        color: #c9ced6;
+        margin-bottom: 12px;
+      }
+
+      .empty-state h3 {
+        color: #4b5563;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .empty-state p {
+        font-size: 11px;
+      }
+
+      /* =========================
+         BACKUP & RESTORE
+      ========================= */
+
+      .backup-card {
+        margin-top: 22px;
+        margin-bottom: 22px;
+      }
+
+      .backup-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+
+      .backup-box {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px;
+        background: #fafbfc;
+      }
+
+      .backup-box-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        font-size: 16px;
+      }
+
+      .backup-box.backup .backup-box-icon {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .backup-box.restore .backup-box-icon {
+        background: var(--success-light);
+        color: var(--success);
+      }
+
+      .backup-box h3 {
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+
+      .backup-box p {
+        font-size: 11px;
+        line-height: 1.6;
+        color: var(--muted);
+        margin-bottom: 13px;
+      }
+
+      .backup-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .backup-info {
+        margin-top: 17px;
+        padding: 12px 14px;
+        border-radius: 9px;
+        background: var(--warning-light);
+        color: #7a5b00;
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .backup-info i,
+      .backup-success-info i {
+        margin-right: 5px;
+      }
+
+      .backup-success-info {
+        margin-top: 12px;
+        padding: 11px 13px;
+        border-radius: 9px;
+        background: var(--success-light);
+        color: #146c43;
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      /* =========================
+         MODAL
+      ========================= */
+
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+        z-index: 2000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .modal-overlay.show {
+        display: flex;
+      }
+
+      .modal {
+        width: 100%;
+        max-width: 620px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 25px 70px rgba(15, 23, 42, 0.2);
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: modalIn 0.18s ease-out;
+      }
+
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .modal-header {
+        padding: 19px 22px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .modal-header h2 {
+        font-size: 16px;
+      }
+
+      .modal-close {
+        width: 32px;
+        height: 32px;
+        border: 0;
+        background: #f3f4f6;
+        border-radius: 8px;
+        color: #6b7280;
+        transition: background 0.2s;
+      }
+
+      .modal-close:hover {
+        background: #e5e7eb;
+      }
+
+      .modal-body {
+        padding: 22px;
+      }
+
+      .modal-footer {
+        padding: 15px 22px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+      }
+
+      /* =========================
+         CHECKBOX
+      ========================= */
+
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 7px;
+      }
+
+      .checkbox-row input {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--primary);
+        cursor: pointer;
+      }
+
+      .checkbox-row label {
+        font-size: 12px;
+        color: #4b5563;
+        cursor: pointer;
+      }
+
+      /* =========================
+         TOAST
+      ========================= */
+
+      .toast {
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        min-width: 270px;
+        max-width: 420px;
+        background: #1f2937;
+        color: white;
+        padding: 14px 16px;
+        border-radius: 10px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        transform: translateY(100px);
+        opacity: 0;
+        transition:
+          transform 0.3s,
+          opacity 0.3s;
+        z-index: 3000;
+      }
+
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .toast.success i {
+        color: #34d399;
+      }
+
+      .toast.error i {
+        color: #fb7185;
+      }
+
+      /* =========================
+         MOBILE OVERLAY
+      ========================= */
+
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.35);
+        z-index: 950;
+        display: none;
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+      }
+
+      /* =========================
+         RESPONSIVE
+      ========================= */
+
+      @media (max-width: 1100px) {
+        .sidebar {
+          width: 220px;
+        }
+
+        .main {
+          margin-left: 220px;
+        }
+
+        .settings-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 800px) {
+        .sidebar {
+          transform: translateX(-100%);
+          width: 250px;
+        }
+
+        .sidebar.show {
+          transform: translateX(0);
+        }
+
+        .main {
+          margin-left: 0;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .topbar {
+          padding: 0 18px;
+        }
+
+        .content {
+          padding: 20px 16px;
+        }
+
+        .user-info {
+          display: none;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+
+        .form-group.full {
+          grid-column: auto;
+        }
+
+        .backup-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .backup-actions {
+          flex-direction: column;
+        }
+
+        .backup-actions .btn {
+          width: 100%;
+        }
+
+        .tenor-top {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .tenor-top .btn {
+          width: 100%;
+        }
+
+        .logo-upload {
+          align-items: flex-start;
+        }
+
+        .info-box {
+          align-items: flex-start;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+
+        .form-actions .btn {
+          width: 100%;
+        }
+
+        .page-title h1 {
+          font-size: 17px;
+        }
+
+        .toast {
+          left: 15px;
+          right: 15px;
+          bottom: 15px;
+          min-width: auto;
+          max-width: none;
+        }
+
+        .modal-overlay {
+          padding: 12px;
+        }
+
+        .modal-body {
+          padding: 18px;
+        }
+
+        .modal-footer {
+          padding: 14px 18px;
+        }
+
+        .modal-footer .btn {
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-credit-card"></i>
+        </div>
+
+        <div class="brand-text">
+          <h2>KITA KREDIT</h2>
+          <span>Sistem Manajemen Kredit</span>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <div class="menu-title">Menu Utama</div>
+
+        <a href="dashboard.html">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="pelanggan.html">
+          <i class="fa-solid fa-users"></i>
+          <span>Pelanggan</span>
+        </a>
+
+        <a href="produk.html">
+          <i class="fa-solid fa-box"></i>
+          <span>Produk &amp; Stok</span>
+        </a>
+
+        <a href="transaksi.html">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span>Transaksi Kredit</span>
+        </a>
+
+        <a href="pembayaran.html">
+          <i class="fa-solid fa-money-bill-wave"></i>
+          <span>Pembayaran</span>
+        </a>
+
+        <a href="tagihan.html">
+          <i class="fa-solid fa-receipt"></i>
+          <span>Tagihan</span>
+        </a>
+
+        <div class="menu-title" style="margin-top: 18px">Laporan</div>
+
+        <a href="laporan.html">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Laporan</span>
+        </a>
+
+        <a href="pengeluaran.html">
+          <i class="fa-solid fa-wallet"></i>
+          <span>Pengeluaran</span>
+        </a>
+
+        <div class="menu-title" style="margin-top: 18px">Sistem</div>
+
+        <a href="pengaturan.html" class="active">
+          <i class="fa-solid fa-gear"></i>
+          <span>Pengaturan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button type="button" class="logout-btn" id="logoutBtn">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          &nbsp; Keluar
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Buka menu"
+            aria-expanded="false"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+
+          <div class="page-title">
+            <h1>Pengaturan</h1>
+            <p>Atur profil usaha dan sistem kredit</p>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-info">
+            <strong id="usernameDisplay">Admin</strong>
+            <span>Administrator</span>
+          </div>
+
+          <div class="user-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- =========================
+             INFO
+        ========================= -->
+
+        <div class="info-box">
+          <div class="info-icon">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+
+          <div>
+            <h3>Pengaturan kredit</h3>
+
+            <p>
+              Pengaturan di halaman ini akan digunakan oleh sistem ketika
+              membuat transaksi kredit baru. Perubahan pengaturan tidak mengubah
+              transaksi lama yang sudah tersimpan.
+            </p>
+          </div>
+        </div>
+
+        <!-- =========================
+             PROFIL + KREDIT
+        ========================= -->
+
+        <div class="settings-grid">
+          <!-- PROFIL USAHA -->
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-icon blue-icon">
+                <i class="fa-solid fa-store"></i>
+              </div>
+
+              <div>
+                <h2>Profil Usaha</h2>
+                <p>Informasi yang akan digunakan pada struk</p>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <form id="profilForm" novalidate>
+                <div class="form-group">
+                  <label class="form-label" for="namaUsaha">
+                    Nama Usaha <span>*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="namaUsaha"
+                    class="form-control"
+                    placeholder="Masukkan nama usaha"
+                    maxlength="100"
+                    autocomplete="organization"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="alamatUsaha"> Alamat </label>
+
+                  <textarea
+                    id="alamatUsaha"
+                    class="form-control"
+                    placeholder="Masukkan alamat usaha"
+                    maxlength="500"
+                  ></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="teleponUsaha">
+                    No. HP / WhatsApp
+                  </label>
+
+                  <input
+                    type="text"
+                    id="teleponUsaha"
+                    class="form-control"
+                    placeholder="Contoh: 081234567890"
+                    maxlength="30"
+                    autocomplete="tel"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label"> Logo Usaha </label>
+
+                  <div class="logo-upload">
+                    <div class="logo-preview" id="logoPreview">
+                      <i class="fa-solid fa-image"></i>
+                    </div>
+
+                    <div class="upload-info">
+                      <p>
+                        Logo akan digunakan pada struk digital dan struk cetak.
+                        Maksimal ukuran file 2 MB.
+                      </p>
+
+                      <label class="upload-btn">
+                        <i class="fa-solid fa-upload"></i>
+                        Pilih Logo
+
+                        <input type="file" id="logoInput" accept="image/*" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="catatanStruk">
+                    Catatan / Footer Struk
+                  </label>
+
+                  <textarea
+                    id="catatanStruk"
+                    class="form-control"
+                    placeholder="Contoh: Terima kasih telah melakukan pembayaran."
+                    maxlength="500"
+                  ></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="resetProfilBtn"
+                  >
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+                  </button>
+
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Simpan Profil
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- PENGATURAN KREDIT -->
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-icon green-icon">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+
+              <div>
+                <h2>Pengaturan Kredit</h2>
+                <p>Nilai default untuk transaksi baru</p>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <form id="kreditForm" novalidate>
+                <div class="form-group">
+                  <label class="form-label" for="metodeBunga">
+                    Metode Bunga
+                  </label>
+
+                  <select id="metodeBunga" class="form-control">
+                    <option value="flat">Flat</option>
+
+                    <option value="nominal">Nominal Tetap</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="bungaDefault">
+                    Bunga Default
+                  </label>
+
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      id="bungaDefault"
+                      class="form-control has-suffix"
+                      min="0"
+                      step="0.01"
+                      placeholder="0"
+                      inputmode="decimal"
+                    />
+
+                    <span class="input-suffix" id="bungaSuffix"> % </span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="jenisAngsuranDefault">
+                    Jenis Angsuran Default
+                  </label>
+
+                  <select id="jenisAngsuranDefault" class="form-control">
+                    <option value="">Pilih jenis angsuran</option>
+
+                    <option value="harian">Harian</option>
+
+                    <option value="mingguan">Mingguan</option>
+
+                    <option value="bulanan">Bulanan</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="dpDefault"> DP Default </label>
+
+                  <div class="input-group">
+                    <span class="input-prefix"> Rp </span>
+
+                    <input
+                      type="number"
+                      id="dpDefault"
+                      class="form-control has-prefix"
+                      min="0"
+                      step="1"
+                      placeholder="0"
+                      inputmode="numeric"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="biayaAdmin">
+                    Biaya Administrasi
+                  </label>
+
+                  <div class="input-group">
+                    <span class="input-prefix"> Rp </span>
+
+                    <input
+                      type="number"
+                      id="biayaAdmin"
+                      class="form-control has-prefix"
+                      min="0"
+                      step="1"
+                      placeholder="0"
+                      inputmode="numeric"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="resetKreditBtn"
+                  >
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+                  </button>
+
+                  <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Simpan Pengaturan
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- =========================
+             STRUK
+        ========================= -->
+
+        <div class="card" style="margin-bottom: 22px">
+          <div class="card-header">
+            <div class="card-header-icon orange-icon">
+              <i class="fa-solid fa-file-invoice"></i>
+            </div>
+
+            <div>
+              <h2>Pengaturan Struk</h2>
+              <p>Atur informasi yang ditampilkan pada struk</p>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <div class="checkbox-row">
+                  <input type="checkbox" id="tampilLogo" />
+
+                  <label for="tampilLogo">
+                    Tampilkan logo usaha pada struk
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="checkbox-row">
+                  <input type="checkbox" id="tampilAlamat" />
+
+                  <label for="tampilAlamat"> Tampilkan alamat usaha </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="checkbox-row">
+                  <input type="checkbox" id="tampilTelepon" />
+
+                  <label for="tampilTelepon">
+                    Tampilkan nomor HP / WhatsApp
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-primary" id="simpanStrukBtn">
+                <i class="fa-solid fa-floppy-disk"></i>
+                Simpan Pengaturan Struk
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- =========================
+             TENOR
+        ========================= -->
+
+        <div class="card tenor-section">
+          <div class="tenor-top">
+            <div class="tenor-title">
+              <div class="tenor-title-icon">
+                <i class="fa-solid fa-calendar-days"></i>
+              </div>
+
+              <div>
+                <h2>Tenor Kredit</h2>
+
+                <p>Kelola pilihan tenor dan bunga cicilan</p>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="tambahTenorBtn">
+              <i class="fa-solid fa-plus"></i>
+              Tambah Tenor
+            </button>
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Tenor</th>
+                  <th>Jenis Angsuran</th>
+                  <th>Jumlah Periode</th>
+                  <th>Bunga</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+
+              <tbody id="tenorTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- =========================
+             BACKUP & RESTORE
+        ========================= -->
+
+        <div class="card backup-card">
+          <div class="card-header">
+            <div class="card-header-icon blue-icon">
+              <i class="fa-solid fa-database"></i>
+            </div>
+
+            <div>
+              <h2>Backup &amp; Restore Data</h2>
+
+              <p>Simpan atau pulihkan data KITA KREDIT</p>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="backup-grid">
+              <!-- BACKUP -->
+
+              <div class="backup-box backup">
+                <div class="backup-box-icon">
+                  <i class="fa-solid fa-download"></i>
+                </div>
+
+                <h3>Backup Data</h3>
+
+                <p>
+                  Download seluruh data KITA KREDIT dalam format JSON. Backup
+                  dapat digunakan sebagai salinan data sebelum melakukan
+                  perubahan besar.
+                </p>
+
+                <div class="backup-actions">
+                  <button type="button" class="btn btn-primary" id="backupBtn">
+                    <i class="fa-solid fa-download"></i>
+                    Backup Sekarang
+                  </button>
+                </div>
+              </div>
+
+              <!-- RESTORE -->
+
+              <div class="backup-box restore">
+                <div class="backup-box-icon">
+                  <i class="fa-solid fa-upload"></i>
+                </div>
+
+                <h3>Restore Data</h3>
+
+                <p>
+                  Pulihkan data dari file backup JSON KITA KREDIT. Data yang
+                  sedang digunakan akan diganti dengan data dari file backup.
+                </p>
+
+                <div class="backup-actions">
+                  <label class="btn btn-success" for="restoreInput">
+                    <i class="fa-solid fa-folder-open"></i>
+                    Pilih File Backup
+                  </label>
+
+                  <input
+                    type="file"
+                    id="restoreInput"
+                    accept=".json,application/json"
+                    hidden
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="backup-info">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+
+              <strong>Penting:</strong>
+
+              Backup hanya menyimpan data aplikasi dari Local Storage. Informasi
+              login/session tidak ikut disimpan. Sebelum restore, sistem akan
+              membuat backup otomatis dari data yang sedang digunakan.
+            </div>
+
+            <div class="backup-success-info">
+              <i class="fa-solid fa-shield-halved"></i>
+
+              Disarankan melakukan backup secara berkala, terutama sebelum
+              menghapus pelanggan, mengubah transaksi, atau melakukan pengujian
+              fitur baru.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================
+         MODAL TENOR
+    ========================= -->
+
+    <div class="modal-overlay" id="tenorModal" aria-hidden="true">
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <div class="modal-header">
+          <h2 id="modalTitle">Tambah Tenor</h2>
+
+          <button
+            type="button"
+            class="modal-close"
+            id="modalCloseBtn"
+            aria-label="Tutup"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form id="tenorForm" novalidate>
+          <div class="modal-body">
+            <input type="hidden" id="tenorId" />
+
+            <div class="form-group">
+              <label class="form-label" for="namaTenor">
+                Nama Tenor <span>*</span>
+              </label>
+
+              <input
+                type="text"
+                id="namaTenor"
+                class="form-control"
+                placeholder="Contoh: 6 Bulan"
+                maxlength="100"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="jenisTenor">
+                Jenis Angsuran <span>*</span>
+              </label>
+
+              <select id="jenisTenor" class="form-control" required>
+                <option value="">Pilih jenis angsuran</option>
+
+                <option value="harian">Harian</option>
+
+                <option value="mingguan">Mingguan</option>
+
+                <option value="bulanan">Bulanan</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="jumlahPeriode">
+                Jumlah Periode <span>*</span>
+              </label>
+
+              <input
+                type="number"
+                id="jumlahPeriode"
+                class="form-control"
+                min="1"
+                step="1"
+                placeholder="Contoh: 30"
+                inputmode="numeric"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="bungaTenor"> Bunga </label>
+
+              <div class="input-group">
+                <input
+                  type="number"
+                  id="bungaTenor"
+                  class="form-control has-suffix"
+                  min="0"
+                  step="0.01"
+                  value="0"
+                  inputmode="decimal"
+                />
+
+                <span class="input-suffix" id="bungaTenorSuffix"> % </span>
+              </div>
+            </div>
+
+            <div class="checkbox-row">
+              <input type="checkbox" id="tenorAktif" />
+
+              <label for="tenorAktif">
+                Tenor aktif dan dapat digunakan pada transaksi
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="batalTenorBtn">
+              Batal
+            </button>
+
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i>
+              Simpan Tenor
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- =========================
+         TOAST
+    ========================= -->
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <i class="fa-solid fa-circle-check"></i>
+
+      <span id="toastMessage"> Berhasil disimpan </span>
+    </div>
+
+    <script>
+      "use strict";
+
+      /* =========================================================
+         AUTHENTICATION
+      ========================================================= */
+
+      const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+      if (isLoggedIn !== "true") {
+        window.location.replace("index.html");
+      }
+
+      /* =========================================================
+         STORAGE
+      ========================================================= */
+
+      const SETTINGS_KEY = "pengaturanKredit";
+      const TENOR_KEY = "tenorKredit";
+
+      const BACKUP_VERSION = "1.0";
+
+      const BACKUP_KEYS = [
+        "pelanggan",
+        "produk",
+        "transaksi",
+        "pengaturanKredit",
+        "tenorKredit",
+      ];
+
+      /* =========================================================
+         DEFAULT SETTINGS
+      ========================================================= */
+
+      const defaultSettings = {
+        profil: {
+          namaUsaha: "",
+          alamat: "",
+          telepon: "",
+          logo: "",
+          catatanStruk: "",
+        },
+
+        kredit: {
+          metodeBunga: "flat",
+          bungaDefault: 0,
+          jenisAngsuranDefault: "",
+          dpDefault: 0,
+          biayaAdmin: 0,
+        },
+
+        struk: {
+          tampilLogo: true,
+          tampilAlamat: true,
+          tampilTelepon: true,
+        },
+      };
+
+      /* =========================================================
+         DOM
+      ========================================================= */
+
+      const $ = (id) => document.getElementById(id);
+
+      /* =========================================================
+         USER
+      ========================================================= */
+
+      const username = sessionStorage.getItem("username") || "Admin";
+
+      $("usernameDisplay").textContent = username;
+
+      /* =========================================================
+         STORAGE HELPERS
+      ========================================================= */
+
+      function cloneDefaultSettings() {
+        return JSON.parse(JSON.stringify(defaultSettings));
+      }
+
+      function saveSettings(settings) {
+        try {
+          localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+
+          return true;
+        } catch (error) {
+          console.error("Gagal menyimpan pengaturan:", error);
+
+          return false;
+        }
+      }
+
+      function getSettings() {
+        try {
+          const raw = localStorage.getItem(SETTINGS_KEY);
+
+          if (!raw) {
+            return cloneDefaultSettings();
+          }
+
+          const parsed = JSON.parse(raw);
+
+          if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+            return cloneDefaultSettings();
+          }
+
+          return {
+            profil: {
+              ...defaultSettings.profil,
+              ...(parsed.profil && typeof parsed.profil === "object"
+                ? parsed.profil
+                : {}),
+            },
+
+            kredit: {
+              ...defaultSettings.kredit,
+              ...(parsed.kredit && typeof parsed.kredit === "object"
+                ? parsed.kredit
+                : {}),
+            },
+
+            struk: {
+              ...defaultSettings.struk,
+              ...(parsed.struk && typeof parsed.struk === "object"
+                ? parsed.struk
+                : {}),
+            },
+          };
+        } catch (error) {
+          console.error("Gagal membaca pengaturan:", error);
+
+          return cloneDefaultSettings();
+        }
+      }
+
+      function getTenor() {
+        try {
+          const raw = localStorage.getItem(TENOR_KEY);
+
+          if (!raw) {
+            return [];
+          }
+
+          const parsed = JSON.parse(raw);
+
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          console.error("Gagal membaca tenor:", error);
+
+          return [];
+        }
+      }
+
+      function saveTenor(data) {
+        try {
+          localStorage.setItem(TENOR_KEY, JSON.stringify(data));
+
+          return true;
+        } catch (error) {
+          console.error("Gagal menyimpan tenor:", error);
+
+          return false;
+        }
+      }
+
+      /* =========================================================
+         FORM HELPERS
+      ========================================================= */
+
+      function getNonNegativeNumber(elementId) {
+        const value = Number($(elementId).value);
+
+        if (!Number.isFinite(value) || value < 0) {
+          return 0;
+        }
+
+        return value;
+      }
+
+      function getPositiveInteger(elementId) {
+        const value = Number($(elementId).value);
+
+        if (!Number.isInteger(value) || value <= 0) {
+          return 0;
+        }
+
+        return value;
+      }
+
+      /* =========================================================
+         LOAD SETTINGS
+      ========================================================= */
+
+      function loadSettings() {
+        const settings = getSettings();
+
+        /* PROFIL */
+
+        $("namaUsaha").value = settings.profil.namaUsaha || "";
+
+        $("alamatUsaha").value = settings.profil.alamat || "";
+
+        $("teleponUsaha").value = settings.profil.telepon || "";
+
+        $("catatanStruk").value = settings.profil.catatanStruk || "";
+
+        renderLogo(settings.profil.logo || "");
+
+        /* KREDIT */
+
+        $("metodeBunga").value =
+          settings.kredit.metodeBunga === "nominal" ? "nominal" : "flat";
+
+        $("bungaDefault").value = settings.kredit.bungaDefault ?? 0;
+
+        $("jenisAngsuranDefault").value =
+          settings.kredit.jenisAngsuranDefault || "";
+
+        $("dpDefault").value = settings.kredit.dpDefault ?? 0;
+
+        $("biayaAdmin").value = settings.kredit.biayaAdmin ?? 0;
+
+        /* STRUK */
+
+        $("tampilLogo").checked = settings.struk.tampilLogo !== false;
+
+        $("tampilAlamat").checked = settings.struk.tampilAlamat !== false;
+
+        $("tampilTelepon").checked = settings.struk.tampilTelepon !== false;
+
+        updateBungaLabel();
+      }
+
+      /* =========================================================
+         LOGO
+      ========================================================= */
+
+      function renderLogo(logo) {
+        const preview = $("logoPreview");
+
+        preview.innerHTML = "";
+
+        if (typeof logo === "string" && logo.startsWith("data:image/")) {
+          const img = document.createElement("img");
+
+          img.src = logo;
+          img.alt = "Logo usaha";
+
+          preview.appendChild(img);
+          return;
+        }
+
+        const icon = document.createElement("i");
+
+        icon.className = "fa-solid fa-image";
+
+        preview.appendChild(icon);
+      }
+
+      function handleLogoUpload(event) {
+        const input = event.target;
+        const file = input.files && input.files[0];
+
+        if (!file) {
+          return;
+        }
+
+        if (!file.type || !file.type.startsWith("image/")) {
+          showToast("File harus berupa gambar.", "error");
+
+          input.value = "";
+          return;
+        }
+
+        const maxSize = 2 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+          showToast("Ukuran logo maksimal 2 MB.", "error");
+
+          input.value = "";
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          try {
+            const logo = e.target.result;
+
+            if (typeof logo !== "string" || !logo.startsWith("data:image/")) {
+              throw new Error("Data logo tidak valid.");
+            }
+
+            const settings = getSettings();
+
+            settings.profil.logo = logo;
+
+            if (!saveSettings(settings)) {
+              throw new Error("Local Storage penuh.");
+            }
+
+            renderLogo(logo);
+
+            showToast("Logo berhasil diperbarui.", "success");
+          } catch (error) {
+            console.error("Gagal menyimpan logo:", error);
+
+            showToast(
+              "Logo gagal disimpan. Kapasitas Local Storage mungkin tidak mencukupi.",
+              "error",
+            );
+          } finally {
+            input.value = "";
+          }
+        };
+
+        reader.onerror = function () {
+          showToast("Gagal membaca file logo.", "error");
+
+          input.value = "";
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      /* =========================================================
+         SAVE PROFIL
+      ========================================================= */
+
+      function saveProfil(event) {
+        event.preventDefault();
+
+        try {
+          const namaUsaha = $("namaUsaha").value.trim();
+
+          if (!namaUsaha) {
+            showToast("Nama usaha wajib diisi.", "error");
+
+            $("namaUsaha").focus();
+            return;
+          }
+
+          const settings = getSettings();
+
+          settings.profil.namaUsaha = namaUsaha;
+
+          settings.profil.alamat = $("alamatUsaha").value.trim();
+
+          settings.profil.telepon = $("teleponUsaha").value.trim();
+
+          settings.profil.catatanStruk = $("catatanStruk").value.trim();
+
+          if (!saveSettings(settings)) {
+            showToast(
+              "Gagal menyimpan profil. Kapasitas Local Storage mungkin tidak mencukupi.",
+              "error",
+            );
+
+            return;
+          }
+
+          showToast("Profil usaha berhasil disimpan.", "success");
+        } catch (error) {
+          console.error("Gagal menyimpan profil:", error);
+
+          showToast("Gagal menyimpan profil.", "error");
+        }
+      }
+
+      /* =========================================================
+         RESET PROFIL
+      ========================================================= */
+
+      function resetProfil() {
+        const settings = getSettings();
+
+        $("namaUsaha").value = settings.profil.namaUsaha || "";
+
+        $("alamatUsaha").value = settings.profil.alamat || "";
+
+        $("teleponUsaha").value = settings.profil.telepon || "";
+
+        $("catatanStruk").value = settings.profil.catatanStruk || "";
+
+        renderLogo(settings.profil.logo || "");
+
+        showToast("Form profil dikembalikan ke data tersimpan.", "success");
+      }
+
+      /* =========================================================
+         SAVE KREDIT
+      ========================================================= */
+
+      function saveKredit(event) {
+        event.preventDefault();
+
+        try {
+          const bunga = getNonNegativeNumber("bungaDefault");
+
+          const dp = getNonNegativeNumber("dpDefault");
+
+          const biayaAdmin = getNonNegativeNumber("biayaAdmin");
+
+          const settings = getSettings();
+
+          settings.kredit.metodeBunga =
+            $("metodeBunga").value === "nominal" ? "nominal" : "flat";
+
+          settings.kredit.bungaDefault = bunga;
+
+          settings.kredit.jenisAngsuranDefault = $(
+            "jenisAngsuranDefault",
+          ).value;
+
+          settings.kredit.dpDefault = dp;
+
+          settings.kredit.biayaAdmin = biayaAdmin;
+
+          if (!saveSettings(settings)) {
+            showToast("Gagal menyimpan pengaturan kredit.", "error");
+
+            return;
+          }
+
+          updateBungaLabel();
+
+          showToast("Pengaturan kredit berhasil disimpan.", "success");
+        } catch (error) {
+          console.error("Gagal menyimpan kredit:", error);
+
+          showToast("Gagal menyimpan pengaturan kredit.", "error");
+        }
+      }
+
+      /* =========================================================
+         RESET KREDIT
+      ========================================================= */
+
+      function resetKredit() {
+        const settings = getSettings();
+
+        $("metodeBunga").value = settings.kredit.metodeBunga || "flat";
+
+        $("bungaDefault").value = settings.kredit.bungaDefault ?? 0;
+
+        $("jenisAngsuranDefault").value =
+          settings.kredit.jenisAngsuranDefault || "";
+
+        $("dpDefault").value = settings.kredit.dpDefault ?? 0;
+
+        $("biayaAdmin").value = settings.kredit.biayaAdmin ?? 0;
+
+        updateBungaLabel();
+
+        showToast("Form kredit dikembalikan ke data tersimpan.", "success");
+      }
+
+      /* =========================================================
+         BUNGA LABEL
+      ========================================================= */
+
+      function updateBungaLabel() {
+        const metode = $("metodeBunga").value;
+
+        const suffix = $("bungaSuffix");
+
+        const tenorSuffix = $("bungaTenorSuffix");
+
+        const isNominal = metode === "nominal";
+
+        suffix.textContent = isNominal ? "Rp" : "%";
+
+        tenorSuffix.textContent = isNominal ? "Rp" : "%";
+      }
+
+      /* =========================================================
+         SAVE STRUK
+      ========================================================= */
+
+      function saveStruk() {
+        try {
+          const settings = getSettings();
+
+          settings.struk.tampilLogo = $("tampilLogo").checked;
+
+          settings.struk.tampilAlamat = $("tampilAlamat").checked;
+
+          settings.struk.tampilTelepon = $("tampilTelepon").checked;
+
+          if (!saveSettings(settings)) {
+            showToast("Gagal menyimpan pengaturan struk.", "error");
+
+            return;
+          }
+
+          showToast("Pengaturan struk berhasil disimpan.", "success");
+        } catch (error) {
+          console.error("Gagal menyimpan struk:", error);
+
+          showToast("Gagal menyimpan pengaturan struk.", "error");
+        }
+      }
+
+      /* =========================================================
+         TENOR MODAL
+      ========================================================= */
+
+      function resetTenorForm() {
+        $("tenorForm").reset();
+
+        $("tenorId").value = "";
+
+        $("bungaTenor").value = 0;
+
+        $("tenorAktif").checked = true;
+
+        updateBungaLabel();
+      }
+
+      function openTenorModal(id = null) {
+        resetTenorForm();
+
+        if (id !== null) {
+          const data = getTenor();
+
+          const item = data.find((tenor) => String(tenor.id) === String(id));
+
+          if (!item) {
+            showToast("Tenor tidak ditemukan.", "error");
+
+            return;
+          }
+
+          $("modalTitle").textContent = "Edit Tenor";
+
+          $("tenorId").value = String(item.id);
+
+          $("namaTenor").value = item.nama || "";
+
+          $("jenisTenor").value = item.jenisAngsuran || "";
+
+          $("jumlahPeriode").value = item.jumlahPeriode || 0;
+
+          $("bungaTenor").value = item.bunga ?? 0;
+
+          $("tenorAktif").checked = item.aktif !== false;
+        } else {
+          $("modalTitle").textContent = "Tambah Tenor";
+        }
+
+        updateBungaLabel();
+
+        $("tenorModal").classList.add("show");
+
+        $("tenorModal").setAttribute("aria-hidden", "false");
+
+        document.body.classList.add("modal-open");
+
+        setTimeout(() => {
+          $("namaTenor").focus();
+        }, 50);
+      }
+
+      function closeTenorModal() {
+        $("tenorModal").classList.remove("show");
+
+        $("tenorModal").setAttribute("aria-hidden", "true");
+
+        document.body.classList.remove("modal-open");
+      }
+
+      /* =========================================================
+         GENERATE TENOR ID
+      ========================================================= */
+
+      function generateTenorId() {
+        const data = getTenor();
+
+        let number = data.length + 1;
+
+        let id = "TEN-" + String(number).padStart(4, "0");
+
+        while (data.some((item) => String(item.id) === id)) {
+          number++;
+
+          id = "TEN-" + String(number).padStart(4, "0");
+        }
+
+        return id;
+      }
+
+      /* =========================================================
+         SAVE TENOR
+      ========================================================= */
+
+      function saveTenorForm(event) {
+        event.preventDefault();
+
+        try {
+          const id = $("tenorId").value.trim();
+
+          const nama = $("namaTenor").value.trim();
+
+          const jenisAngsuran = $("jenisTenor").value;
+
+          const jumlahPeriode = getPositiveInteger("jumlahPeriode");
+
+          const bunga = getNonNegativeNumber("bungaTenor");
+
+          const aktif = $("tenorAktif").checked;
+
+          if (!nama) {
+            showToast("Nama tenor wajib diisi.", "error");
+
+            $("namaTenor").focus();
+            return;
+          }
+
+          if (!jenisAngsuran) {
+            showToast("Jenis angsuran wajib dipilih.", "error");
+
+            $("jenisTenor").focus();
+            return;
+          }
+
+          if (jumlahPeriode <= 0) {
+            showToast("Jumlah periode harus lebih dari 0.", "error");
+
+            $("jumlahPeriode").focus();
+            return;
+          }
+
+          const item = {
+            id: id || generateTenorId(),
+
+            nama,
+
+            jenisAngsuran,
+
+            jumlahPeriode,
+
+            bunga,
+
+            aktif,
+          };
+
+          const data = getTenor();
+
+          if (id) {
+            const index = data.findIndex(
+              (tenor) => String(tenor.id) === String(id),
+            );
+
+            if (index === -1) {
+              showToast("Tenor yang ingin diedit tidak ditemukan.", "error");
+
+              return;
+            }
+
+            data[index] = item;
+          } else {
+            data.push(item);
+          }
+
+          if (!saveTenor(data)) {
+            showToast(
+              "Gagal menyimpan tenor. Kapasitas Local Storage mungkin tidak mencukupi.",
+              "error",
+            );
+
+            return;
+          }
+
+          closeTenorModal();
+          renderTenor();
+
+          showToast(
+            id ? "Tenor berhasil diperbarui." : "Tenor berhasil ditambahkan.",
+            "success",
+          );
+        } catch (error) {
+          console.error("Gagal menyimpan tenor:", error);
+
+          showToast("Gagal menyimpan tenor.", "error");
+        }
+      }
+
+      /* =========================================================
+         TENOR DISPLAY
+      ========================================================= */
+
+      function getJenisTenorInfo(jenis) {
+        switch (jenis) {
+          case "harian":
+            return {
+              text: "Harian",
+              className: "badge-daily",
+            };
+
+          case "mingguan":
+            return {
+              text: "Mingguan",
+              className: "badge-weekly",
+            };
+
+          case "bulanan":
+          default:
+            return {
+              text: "Bulanan",
+              className: "badge-monthly",
+            };
+        }
+      }
+
+      function formatBungaTenor(value) {
+        const settings = getSettings();
+
+        const number = Number(value) || 0;
+
+        if (settings.kredit.metodeBunga === "nominal") {
+          return "Rp " + formatNumber(number);
+        }
+
+        return formatNumber(number) + "%";
+      }
+
+      /* =========================================================
+         RENDER TENOR
+      ========================================================= */
+
+      function renderTenor() {
+        const data = getTenor();
+
+        const tbody = $("tenorTableBody");
+
+        if (!data.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <i class="fa-solid fa-calendar-xmark"></i>
+
+                  <h3>
+                    Belum ada tenor kredit
+                  </h3>
+
+                  <p>
+                    Tambahkan tenor yang ingin digunakan
+                    untuk transaksi kredit.
+                  </p>
+                </div>
+              </td>
+            </tr>
+          `;
+
+          return;
+        }
+
+        tbody.innerHTML = data
+          .map((item, index) => {
+            const jenis = getJenisTenorInfo(item.jenisAngsuran);
+
+            const aktif = item.aktif !== false;
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                  <td>
+                    ${index + 1}
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${escapeHtml(item.nama || "")}
+                    </strong>
+                  </td>
+
+                  <td>
+                    <span class="badge ${jenis.className}">
+                      ${jenis.text}
+                    </span>
+                  </td>
+
+                  <td>
+                    ${formatNumber(item.jumlahPeriode)}
+                    periode
+                  </td>
+
+                  <td>
+                    ${formatBungaTenor(item.bunga)}
+                  </td>
+
+                  <td>
+                    ${
+                      aktif
+                        ? `
+                          <span class="badge badge-active">
+                            Aktif
+                          </span>
+                        `
+                        : `
+                          <span class="badge badge-inactive">
+                            Tidak Aktif
+                          </span>
+                        `
+                    }
+                  </td>
+
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        type="button"
+                        class="icon-btn edit-btn"
+                        data-action="edit"
+                        data-id="${escapeHtml(String(item.id ?? ""))}"
+                        title="Edit"
+                        aria-label="Edit tenor"
+                      >
+                        <i class="fa-solid fa-pen"></i>
+                      </button>
+
+                      <button
+                        type="button"
+                        class="icon-btn delete-btn"
+                        data-action="delete"
+                        data-id="${escapeHtml(String(item.id ?? ""))}"
+                        title="Hapus"
+                        aria-label="Hapus tenor"
+                      >
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                `;
+
+            return row.outerHTML;
+          })
+          .join("");
+      }
+
+      /* =========================================================
+         DELETE TENOR
+      ========================================================= */
+
+      function deleteTenor(id) {
+        const data = getTenor();
+
+        const item = data.find((tenor) => String(tenor.id) === String(id));
+
+        if (!item) {
+          showToast("Tenor tidak ditemukan.", "error");
+
+          return;
+        }
+
+        const confirmDelete = window.confirm(`Hapus tenor "${item.nama}"?`);
+
+        if (!confirmDelete) {
+          return;
+        }
+
+        const newData = data.filter((tenor) => String(tenor.id) !== String(id));
+
+        if (!saveTenor(newData)) {
+          showToast("Gagal menghapus tenor.", "error");
+
+          return;
+        }
+
+        renderTenor();
+
+        showToast("Tenor berhasil dihapus.", "success");
+      }
+
+      /* =========================================================
+         TENOR TABLE EVENTS
+      ========================================================= */
+
+      function handleTenorTableClick(event) {
+        const button = event.target.closest("button[data-action]");
+
+        if (!button) {
+          return;
+        }
+
+        const id = button.dataset.id;
+
+        const action = button.dataset.action;
+
+        if (action === "edit") {
+          openTenorModal(id);
+        }
+
+        if (action === "delete") {
+          deleteTenor(id);
+        }
+      }
+
+      /* =========================================================
+         BACKUP
+      ========================================================= */
+
+      function getBackupData() {
+        const data = {};
+
+        BACKUP_KEYS.forEach((key) => {
+          const value = localStorage.getItem(key);
+
+          if (value === null) {
+            data[key] = null;
+            return;
+          }
+
+          try {
+            data[key] = JSON.parse(value);
+          } catch (error) {
+            console.warn(`Data ${key} bukan JSON valid.`, error);
+
+            data[key] = null;
+          }
+        });
+
+        return data;
+      }
+
+      function createBackupObject(tipe = "MANUAL-BACKUP") {
+        return {
+          aplikasi: "KITA KREDIT",
+          versiBackup: BACKUP_VERSION,
+          tipe,
+          tanggalBackup: new Date().toISOString(),
+          data: getBackupData(),
+        };
+      }
+
+      function downloadBackupFile(backup, prefix) {
+        const json = JSON.stringify(backup, null, 2);
+
+        const blob = new Blob([json], {
+          type: "application/json;charset=utf-8",
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        const tanggal = new Date();
+
+        const tahun = tanggal.getFullYear();
+
+        const bulan = String(tanggal.getMonth() + 1).padStart(2, "0");
+
+        const hari = String(tanggal.getDate()).padStart(2, "0");
+
+        const jam = String(tanggal.getHours()).padStart(2, "0");
+
+        const menit = String(tanggal.getMinutes()).padStart(2, "0");
+
+        const detik = String(tanggal.getSeconds()).padStart(2, "0");
+
+        const namaFile = `${prefix}-${tahun}-${bulan}-${hari}-${jam}${menit}${detik}.json`;
+
+        link.href = url;
+        link.download = namaFile;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+        }, 1000);
+      }
+
+      function backupData() {
+        try {
+          const backup = createBackupObject("MANUAL-BACKUP");
+
+          downloadBackupFile(backup, "KITA-KREDIT-BACKUP");
+
+          showToast("Backup data berhasil dibuat.", "success");
+        } catch (error) {
+          console.error("Backup error:", error);
+
+          showToast("Backup gagal dibuat.", "error");
+        }
+      }
+
+      /* =========================================================
+         VALIDATE BACKUP
+      ========================================================= */
+
+      function validateBackup(backup) {
+        if (!backup || typeof backup !== "object" || Array.isArray(backup)) {
+          return {
+            valid: false,
+            message: "Format backup tidak valid.",
+          };
+        }
+
+        if (backup.aplikasi !== "KITA KREDIT") {
+          return {
+            valid: false,
+            message: "File ini bukan backup KITA KREDIT.",
+          };
+        }
+
+        if (
+          !backup.data ||
+          typeof backup.data !== "object" ||
+          Array.isArray(backup.data)
+        ) {
+          return {
+            valid: false,
+            message: "Struktur data backup tidak valid.",
+          };
+        }
+
+        const missingKeys = BACKUP_KEYS.filter(
+          (key) => !Object.prototype.hasOwnProperty.call(backup.data, key),
+        );
+
+        if (missingKeys.length) {
+          return {
+            valid: false,
+            message:
+              "Backup tidak lengkap. Data berikut tidak ditemukan: " +
+              missingKeys.join(", "),
+          };
+        }
+
+        if (!Array.isArray(backup.data.pelanggan)) {
+          return {
+            valid: false,
+            message: "Data pelanggan dalam backup tidak valid.",
+          };
+        }
+
+        if (!Array.isArray(backup.data.produk)) {
+          return {
+            valid: false,
+            message: "Data produk dalam backup tidak valid.",
+          };
+        }
+
+        if (!Array.isArray(backup.data.transaksi)) {
+          return {
+            valid: false,
+            message: "Data transaksi dalam backup tidak valid.",
+          };
+        }
+
+        if (!Array.isArray(backup.data.tenorKredit)) {
+          return {
+            valid: false,
+            message: "Data tenor dalam backup tidak valid.",
+          };
+        }
+
+        const settings = backup.data.pengaturanKredit;
+
+        if (
+          !settings ||
+          typeof settings !== "object" ||
+          Array.isArray(settings)
+        ) {
+          return {
+            valid: false,
+            message: "Data pengaturan kredit dalam backup tidak valid.",
+          };
+        }
+
+        return {
+          valid: true,
+          message: "",
+        };
+      }
+
+      /* =========================================================
+         SAFETY BACKUP
+      ========================================================= */
+
+      function createSafetyBackup() {
+        try {
+          const backup = createBackupObject("AUTO-SAFETY-BACKUP");
+
+          downloadBackupFile(backup, "KITA-KREDIT-AUTO-BACKUP");
+
+          return true;
+        } catch (error) {
+          console.error("Safety backup error:", error);
+
+          return false;
+        }
+      }
+
+      /* =========================================================
+         RESTORE
+      ========================================================= */
+
+      function restoreData(event) {
+        const input = event.target;
+
+        const file = input.files && input.files[0];
+
+        if (!file) {
+          return;
+        }
+
+        const isJson = file.name.toLowerCase().endsWith(".json");
+
+        if (!isJson) {
+          showToast("File harus berupa backup JSON KITA KREDIT.", "error");
+
+          input.value = "";
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          try {
+            const backup = JSON.parse(e.target.result);
+
+            const validation = validateBackup(backup);
+
+            if (!validation.valid) {
+              showToast(validation.message, "error");
+
+              input.value = "";
+              return;
+            }
+
+            const data = backup.data;
+
+            const jumlahPelanggan = data.pelanggan.length;
+
+            const jumlahProduk = data.produk.length;
+
+            const jumlahTransaksi = data.transaksi.length;
+
+            const jumlahTenor = data.tenorKredit.length;
+
+            let tanggalBackup = "Tidak diketahui";
+
+            if (backup.tanggalBackup) {
+              const tanggal = new Date(backup.tanggalBackup);
+
+              if (!Number.isNaN(tanggal.getTime())) {
+                tanggalBackup = tanggal.toLocaleString("id-ID");
+              }
+            }
+
+            const pesan = `
+DATA BACKUP DITEMUKAN
+
+Tanggal backup:
+${tanggalBackup}
+
+Data yang akan dipulihkan:
+
+Pelanggan  : ${jumlahPelanggan}
+Produk     : ${jumlahProduk}
+Transaksi  : ${jumlahTransaksi}
+Tenor      : ${jumlahTenor}
+
+PERHATIAN:
+Data yang sedang digunakan akan diganti.
+
+Sebelum restore, sistem akan membuat
+backup otomatis dari data saat ini.
+
+Lanjutkan restore?
+              `.trim();
+
+            const konfirmasi = window.confirm(pesan);
+
+            if (!konfirmasi) {
+              input.value = "";
+              return;
+            }
+
+            const safetyBackupBerhasil = createSafetyBackup();
+
+            if (!safetyBackupBerhasil) {
+              showToast(
+                "Restore dibatalkan karena backup otomatis data lama gagal dibuat.",
+                "error",
+              );
+
+              input.value = "";
+              return;
+            }
+
+            /*
+             * Simpan semua data.
+             */
+            BACKUP_KEYS.forEach((key) => {
+              const value = data[key];
+
+              localStorage.setItem(key, JSON.stringify(value));
+            });
+
+            showToast("Restore berhasil. Memuat ulang aplikasi...", "success");
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 1200);
+          } catch (error) {
+            console.error("Restore error:", error);
+
+            showToast("File backup rusak atau tidak dapat dibaca.", "error");
+          } finally {
+            input.value = "";
+          }
+        };
+
+        reader.onerror = function () {
+          showToast("Gagal membaca file backup.", "error");
+
+          input.value = "";
+        };
+
+        reader.readAsText(file, "UTF-8");
+      }
+
+      /* =========================================================
+         FORMAT HELPERS
+      ========================================================= */
+
+      function formatNumber(value) {
+        return new Intl.NumberFormat("id-ID").format(Number(value) || 0);
+      }
+
+      function escapeHtml(value) {
+        const div = document.createElement("div");
+
+        div.textContent = value == null ? "" : String(value);
+
+        return div.innerHTML;
+      }
+
+      /* =========================================================
+         TOAST
+      ========================================================= */
+
+      let toastTimer = null;
+
+      function showToast(message, type = "success") {
+        const toast = $("toast");
+
+        const messageEl = $("toastMessage");
+
+        const icon = toast.querySelector("i");
+
+        messageEl.textContent = message;
+
+        toast.className = "toast " + (type === "error" ? "error" : "success");
+
+        if (type === "error") {
+          icon.className = "fa-solid fa-circle-exclamation";
+        } else {
+          icon.className = "fa-solid fa-circle-check";
+        }
+
+        toast.classList.add("show");
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3500);
+      }
+
+      /* =========================================================
+         MOBILE SIDEBAR
+      ========================================================= */
+
+      function toggleSidebar() {
+        const sidebar = $("sidebar");
+
+        const overlay = $("sidebarOverlay");
+
+        const button = $("mobileMenuBtn");
+
+        const isOpen = sidebar.classList.toggle("show");
+
+        overlay.classList.toggle("show", isOpen);
+
+        button.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      function closeSidebar() {
+        $("sidebar").classList.remove("show");
+
+        $("sidebarOverlay").classList.remove("show");
+
+        $("mobileMenuBtn").setAttribute("aria-expanded", "false");
+      }
+
+      /* =========================================================
+         LOGOUT
+      ========================================================= */
+
+      function logout() {
+        const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
+
+        if (!confirmLogout) {
+          return;
+        }
+
+        sessionStorage.removeItem("isLoggedIn");
+
+        sessionStorage.removeItem("username");
+
+        window.location.replace("index.html");
+      }
+
+      /* =========================================================
+         EVENT LISTENERS
+      ========================================================= */
+
+      $("profilForm").addEventListener("submit", saveProfil);
+
+      $("kreditForm").addEventListener("submit", saveKredit);
+
+      $("resetProfilBtn").addEventListener("click", resetProfil);
+
+      $("resetKreditBtn").addEventListener("click", resetKredit);
+
+      $("simpanStrukBtn").addEventListener("click", saveStruk);
+
+      $("logoInput").addEventListener("change", handleLogoUpload);
+
+      $("metodeBunga").addEventListener("change", updateBungaLabel);
+
+      $("tambahTenorBtn").addEventListener("click", () => openTenorModal());
+
+      $("modalCloseBtn").addEventListener("click", closeTenorModal);
+
+      $("batalTenorBtn").addEventListener("click", closeTenorModal);
+
+      $("tenorForm").addEventListener("submit", saveTenorForm);
+
+      $("tenorTableBody").addEventListener("click", handleTenorTableClick);
+
+      $("backupBtn").addEventListener("click", backupData);
+
+      $("restoreInput").addEventListener("change", restoreData);
+
+      $("mobileMenuBtn").addEventListener("click", toggleSidebar);
+
+      $("sidebarOverlay").addEventListener("click", closeSidebar);
+
+      $("logoutBtn").addEventListener("click", logout);
+
+      /* =========================================================
+         MODAL EVENTS
+      ========================================================= */
+
+      $("tenorModal").addEventListener("click", function (event) {
+        if (event.target === this) {
+          closeTenorModal();
+        }
+      });
+
+      /* =========================================================
+         GLOBAL KEYBOARD EVENTS
+      ========================================================= */
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          if ($("tenorModal").classList.contains("show")) {
+            closeTenorModal();
+            return;
+          }
+
+          closeSidebar();
+        }
+      });
+
+      /* =========================================================
+         CLOSE MOBILE SIDEBAR WHEN NAVIGATING
+      ========================================================= */
+
+      document.querySelectorAll(".menu a").forEach((link) => {
+        link.addEventListener("click", closeSidebar);
+      });
+
+      /* =========================================================
+         INIT
+      ========================================================= */
+
+      loadSettings();
+      renderTenor();
+    </script>
+  </body>
+</html>

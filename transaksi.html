@@ -1,0 +1,3006 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="KITA KREDIT - Transaksi Kredit">
+<title>Transaksi Kredit - KITA KREDIT</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root{--primary:#2563eb;
+      --primary-dark:#1d4ed8;
+      --primary-soft:#eff6ff;
+      --sidebar:#0f172a;
+      --sidebar-hover:#1e293b;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --bg:#f8fafc;
+      --white:#fff;
+      --green:#16a34a;
+      --green-soft:#f0fdf4;
+      --red:#dc2626;
+      --red-soft:#fef2f2;
+      --yellow:#d97706;
+      --yellow-soft:#fffbeb;
+      --shadow:0 8px 30px rgba(15,23,42,.07);
+      --radius:16px}
+*{box-sizing:border-box}
+
+html,body{margin:0;
+          padding:0;
+          font-family:Inter,Arial,sans-serif;
+          background:var(--bg);
+          color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;
+         background:var(--sidebar);
+         color:#cbd5e1;
+         position:fixed;
+         left:0;
+         top:0;
+         bottom:0;
+         z-index:1000;
+         display:flex;
+         flex-direction:column;
+         transition:.25s}
+
+.brand{height:76px;
+       padding:0 22px;
+       display:flex;
+       align-items:center;
+       gap:12px;
+       border-bottom:1px solid rgba(255,255,255,.08)}
+
+.brand-icon{width:40px;
+            height:40px;
+            border-radius:12px;
+            background:var(--primary);
+            color:#fff;
+            display:grid;
+            place-items:center;
+            font-size:18px;
+            font-weight:800}
+
+.brand-text strong{display:block;color:#fff;font-size:17px}
+.brand-text span{display:block;color:#94a3b8;font-size:11px;margin-top:3px}
+
+.menu{padding:18px 12px;overflow:auto}
+.menu-title{font-size:10px;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            color:#64748b;
+            padding:8px 12px}
+
+.menu a{display:flex;
+        align-items:center;
+        gap:12px;
+        padding:11px 13px;
+        border-radius:10px;
+        margin:3px 0;
+        color:#cbd5e1;
+        font-size:13px;
+        font-weight:500}
+
+.menu a i{width:19px;text-align:center}
+.menu a:hover{background:var(--sidebar-hover);color:#fff}
+.menu a.active{background:var(--primary);color:#fff;box-shadow:0 5px 16px rgba(37,99,235,.25)}
+
+.sidebar-bottom{margin-top:auto;
+                padding:14px;
+                border-top:1px solid rgba(255,255,255,.08)}
+
+.logout{width:100%;border:0;
+        background:transparent;color:#cbd5e1;
+        padding:11px 13px;border-radius:10px;
+        text-align:left;display:flex;gap:12px;align-items:center}
+.logout:hover{background:var(--sidebar-hover);color:#fff}
+
+.main{margin-left:260px;width:calc(100% - 260px);min-width:0}
+.topbar{height:76px;background:#fff;
+        border-bottom:1px solid var(--border);
+        display:flex;align-items:center;
+        justify-content:space-between;
+        padding:0 30px;position:sticky;top:0;z-index:100}
+.top-left{display:flex;align-items:center;gap:14px}
+
+.mobile-menu{display:none;border:0;background:var(--primary-soft);
+            color:var(--primary);width:40px;height:40px;border-radius:10px}
+.page-title h1{font-size:20px;margin:0 0 4px;font-weight:800}
+.page-title p{margin:0;color:var(--muted);font-size:12px}
+.user-box{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;
+        background:var(--primary-soft);
+        color:var(--primary);display:grid;
+        place-items:center;font-weight:800}
+.user-info strong{font-size:12px;display:block}
+.user-info span{font-size:11px;color:var(--muted)}
+
+.content{padding:28px 30px 45px;max-width:1500px;margin:auto}
+.notice{background:var(--primary-soft);border:1px solid #dbeafe;  
+        color:#1e40af;border-radius:12px;padding:12px 15px;
+        font-size:12px;margin-bottom:22px;display:flex;gap:10px;align-items:flex-start}
+
+.layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(340px,.75fr);
+        gap:22px;align-items:start}
+.card{background:#fff;border:1px solid var(--border);
+      border-radius:var(--radius);box-shadow:var(--shadow)}
+.card-header{padding:19px 21px;border-bottom:1px solid var(--border);
+      display:flex;justify-content:space-between;gap:12px;align-items:center}
+.card-header h2{font-size:15px;margin:0;font-weight:800}
+.card-header p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.card-body{padding:21px}
+
+.section-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;
+      color:var(--primary);font-weight:800;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.section-label:after{content:"";height:1px;background:#dbeafe;flex:1}
+
+.customer-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{min-width:0}
+.field.full{grid-column:1/-1}
+label{display:block;font-size:11px;font-weight:700;color:#334155;margin:0 0 7px}
+.required{color:var(--red)}
+
+input,select,textarea{width:100%;border:1px solid var(--border);
+      border-radius:10px;padding:11px 12px;outline:none;background:#fff;
+      color:var(--text);font-size:12px;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 3px #eff6ff}
+input[readonly]{background:#f8fafc;color:#475569}
+textarea{resize:vertical;min-height:80px}
+
+.btn{border:0;border-radius:10px;padding:11px 14px;font-size:12px;font-weight:700;
+     display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-outline{background:#fff;color:#334155;border:1px solid var(--border)}
+.btn-outline:hover{background:#f8fafc}
+.btn-success{background:var(--green);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn-small{padding:8px 10px;font-size:11px}
+.btn-block{width:100%}
+
+.search-select{position:relative}
+.search-input-wrap{position:relative}
+.search-input-wrap>i{position:absolute;left:13px;top:50%;transform:translateY(-50%);
+      color:#94a3b8;font-size:13px;pointer-events:none;z-index:2}
+.search-input-wrap input{padding-left:38px;padding-right:38px}
+.search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+      width:28px;height:28px;border:0;background:transparent;color:#94a3b8;
+      border-radius:8px;display:none;z-index:3}
+.search-clear:hover{background:#f1f5f9;color:#475569}
+
+.search-results{position:absolute;left:0;right:0;top:calc(100% + 6px);
+      background:#fff;border:1px solid var(--border);border-radius:12px;
+      box-shadow:0 14px 30px rgba(15,23,42,.12);max-height:280px;overflow:auto;z-index:500;display:none}
+.search-results.show{display:block}
+.search-result{padding:11px 12px;border-bottom:1px solid var(--border);cursor:pointer;background:#fff}
+.search-result:last-child{border-bottom:0}
+.search-result:hover{background:var(--primary-soft)}
+.search-result-name{font-weight:700;font-size:12px}
+.search-result-meta{font-size:10px;color:var(--muted);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap}
+.search-result-stock{font-weight:700}
+.search-empty{padding:15px 12px;color:var(--muted);font-size:11px;text-align:center}
+.search-empty i{display:block;font-size:18px;margin-bottom:6px}
+
+.product-list{display:grid;gap:12px}
+.product-row{border:1px solid var(--border);border-radius:13px;padding:13px;background:#fff}
+.product-row-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px}
+.product-number{font-size:11px;font-weight:800;color:#475569}
+.product-grid{display:grid;grid-template-columns:minmax(0,1.7fr) 110px 150px 42px;gap:10px;align-items:end}
+.product-subtotal{height:42px;background:#f8fafc;border:1px solid var(--border);
+        border-radius:10px;padding:11px 10px;font-size:12px;font-weight:800;text-align:right}
+.product-selected-info{margin-top:8px;padding:9px 10px;border-radius:9px;background:#f8fafc;
+        color:#475569;font-size:10px;line-height:1.5}
+.product-selected-info .stock-ok{color:var(--green);font-weight:700}
+.product-selected-info .stock-warning{color:var(--red);font-weight:700}
+.remove-product{width:42px;height:42px;padding:0}
+.product-total-box{margin-top:13px;background:var(--primary-soft);border:1px solid #dbeafe;
+        border-radius:12px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.product-total-box span{font-size:11px;color:#1e40af;font-weight:700}
+.product-total-box strong{font-size:18px;color:var(--primary)}
+
+.divider{height:1px;background:var(--border);margin:22px 0}
+.calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:13px;padding:16px}
+.calc-row{display:flex;justify-content:space-between;gap:15px;padding:7px 0;font-size:12px}
+.calc-row span:first-child{color:#64748b}
+.calc-row strong{text-align:right}
+.calc-row.total{border-top:1px dashed #cbd5e1;margin-top:7px;padding-top:13px;font-size:14px}
+.calc-row.total strong{color:var(--primary);font-size:16px}
+
+.summary-list{display:grid;gap:1px}
+.summary-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;font-size:12px}
+.summary-item span{color:var(--muted)}
+.summary-item strong{text-align:right}
+.summary-total{margin-top:7px;padding-top:14px;border-top:1px solid var(--border);display:flex;
+        justify-content:space-between;font-size:14px;font-weight:800}
+.summary-total strong{color:var(--primary);font-size:18px}
+.summary-products{display:grid;gap:5px;margin-top:4px}
+.summary-product{font-size:11px;padding:7px 8px;background:#f8fafc;border-radius:8px;
+         display:flex;justify-content:space-between;gap:8px}
+.summary-product span{color:#475569}
+.summary-product strong{color:#0f172a}
+
+.empty{text-align:center;padding:25px 15px;color:var(--muted);font-size:12px;
+         border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc}
+.empty i{font-size:25px;color:#94a3b8;margin-bottom:8px}
+.product-info,.customer-info{display:none;margin-top:10px;padding:11px 12px;
+         background:#f8fafc;border-radius:10px;border:1px solid var(--border);
+         font-size:11px;color:#475569;line-height:1.7}
+.product-info.show,.customer-info.show{display:block}
+
+.schedule{margin-top:20px;overflow:auto}
+.schedule table{width:100%;border-collapse:collapse;min-width:600px}
+.schedule th,.schedule td{padding:10px 11px;border-bottom:1px solid var(--border);
+          font-size:11px;text-align:left;white-space:nowrap}
+.schedule th{background:#f8fafc;color:#475569;font-size:10px;text-transform:uppercase}
+.badge{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:700}
+.badge-blue{background:var(--primary-soft);color:#1d4ed8}
+
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:2000;display:none;
+       align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:18px;width:min(520px,100%);max-height:90vh;
+       overflow:auto;box-shadow:0 25px 70px rgba(0,0,0,.2)}
+.modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;
+       justify-content:space-between;align-items:center}
+.modal-header h3{margin:0;font-size:16px}
+.close{border:0;background:#f1f5f9;color:#475569;width:34px;height:34px;border-radius:9px}
+.modal-body{padding:20px}
+.modal-footer{padding:15px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:9px}
+
+.toast{position:fixed;right:22px;bottom:22px;z-index:3000;background:#0f172a;color:#fff;
+       padding:13px 16px;border-radius:11px;font-size:12px;box-shadow:var(--shadow);display:none;max-width:360px}
+.toast.show{display:block}
+
+#printSummaryContainer{display:none}
+.print-summary-page{font-family:Arial,Helvetica,sans-serif;
+                   color:#111827;background:#fff;
+                   width:100%;max-width:800px;margin:0 auto}
+.print-summary-header{text-align:center;border-bottom:2px solid #111827;
+                   padding-bottom:14px;margin-bottom:18px}
+.print-summary-header h1{margin:0;font-size:24px}
+.print-summary-header p{margin:5px 0 0;font-size:11px;color:#64748b}
+.print-summary-section{margin-bottom:18px}
+.print-summary-section-title{font-size:24px;font-weight:800;text-transform:uppercase;
+                       border-bottom:1px solid #cbd5e1;padding-bottom:6px;margin-bottom:8px}
+.print-summary-table{width:100%;border-collapse:collapse}
+.print-summary-table td{padding:7px 5px;border-bottom:1px solid #e5e7eb;font-size:11px;vertical-align:top}
+.print-summary-table td:first-child{width:42%;color:#64748b}
+.print-summary-table td:last-child{text-align:right;font-weight:700}
+.print-product-table{width:100%;border-collapse:collapse}
+.print-product-table th,.print-product-table td{padding:7px 5px;border-bottom:1px solid #e5e7eb;font-size:10px}
+.print-product-table th{text-align:left;background:#f8fafc}
+.print-product-table td:nth-child(2),.print-product-table td:nth-child(3),.print-product-table td:nth-child(4){text-align:right}
+.print-summary-total{margin-top:12px;padding:12px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px}
+.print-summary-total-row{display:flex;justify-content:space-between;gap:15px;padding:5px 0;font-size:12px}
+.print-summary-total-row.grand-total{border-top:2px solid #111827;
+                    margin-top:7px;padding-top:10px;font-size:15px;font-weight:800}
+.print-summary-footer{margin-top:30px;padding-top:10px;border-top:1px solid #cbd5e1;
+                    display:flex;justify-content:space-between;font-size:10px;color:#64748b}
+
+@media(max-width:1100px){
+.layout{grid-template-columns:1fr}
+.summary-card{order:99;width:100%}
+}
+@media(max-width:800px){
+.sidebar{transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0;width:100%}
+.mobile-menu{display:grid;place-items:center}
+.topbar{padding:0 18px}
+.content{padding:20px 18px 35px}
+.user-info{display:none}
+.form-grid{grid-template-columns:1fr}
+.customer-row{grid-template-columns:1fr}
+.product-grid{grid-template-columns:1fr 100px}
+.product-grid .product-subtotal{grid-column:1}
+.product-grid .remove-product{grid-column:2;grid-row:3;justify-self:end}
+.product-grid .field:first-child{grid-column:1/-1}
+}
+@media(max-width:500px){
+.page-title h1{font-size:17px}
+.page-title p{display:none}
+.card-header,.card-body{padding:16px}
+.modal{padding:10px}
+}
+
+@media print{
+@page{size:A4;margin:15mm}
+body.print-summary-mode{background:#fff!important}
+body.print-summary-mode>*{display:none!important}
+body.print-summary-mode #printSummaryContainer{display:block!important}
+body.print-summary-mode .print-summary-page{max-width:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
+<div class="brand-text">
+<strong>KITA KREDIT</strong>
+<span>Sistem Manajemen Kredit</span>
+</div>
+</div>
+
+<nav class="menu">
+<div class="menu-title">Menu Utama</div>
+<a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i>Dashboard</a>
+<a href="pelanggan.html"><i class="fa-solid fa-users"></i>Pelanggan</a>
+<a href="produk.html"><i class="fa-solid fa-box"></i>Produk & Stok</a>
+<a href="transaksi.html" class="active"><i class="fa-solid fa-file-invoice-dollar"></i>Transaksi Kredit</a>
+<a href="pembayaran.html"><i class="fa-solid fa-money-bill-wave"></i>Pembayaran</a>
+<a href="tagihan.html"><i class="fa-solid fa-calendar-check"></i>Tagihan</a>
+<a href="laporan.html"><i class="fa-solid fa-chart-column"></i>Laporan</a>
+<a href="pengeluaran.html"><i class="fa-solid fa-receipt"></i>Pengeluaran</a>
+
+<div class="menu-title" style="margin-top:12px">Sistem</div>
+<a href="pengaturan.html"><i class="fa-solid fa-gear"></i>Pengaturan</a>
+</nav>
+
+<div class="sidebar-bottom">
+<button class="logout" onclick="logout()">
+<i class="fa-solid fa-right-from-bracket"></i> Keluar
+</button>
+</div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+<div class="top-left">
+<button class="mobile-menu" onclick="toggleSidebar()">
+<i class="fa-solid fa-bars"></i>
+</button>
+
+<div class="page-title">
+<h1>Transaksi Kredit</h1>
+<p>Buat transaksi kredit dengan maksimal 5 jenis produk.</p>
+</div>
+</div>
+
+<div class="user-box">
+<div class="avatar"><i class="fa-solid fa-user"></i></div>
+<div class="user-info">
+<strong id="topUsername">Admin</strong>
+<span>Administrator</span>
+</div>
+</div>
+</header>
+
+<section class="content">
+
+<div class="notice">
+<i class="fa-solid fa-circle-info"></i>
+<div>
+<strong>Multi Produk:</strong> Satu transaksi dapat berisi maksimal
+<strong>5 jenis/type produk</strong>. Total harga jual kredit otomatis merupakan jumlah seluruh subtotal produk yang dibeli.
+</div>
+</div>
+
+<div class="layout">
+
+<div class="card">
+
+<div class="card-header">
+<div>
+<h2><i class="fa-solid fa-file-circle-plus" style="color:var(--primary);margin-right:7px"></i>Form Transaksi Kredit</h2>
+<p>Isi pelanggan, hingga 5 produk, dan skema kredit.</p>
+</div>
+</div>
+
+<div class="card-body">
+
+<form id="transactionForm" onsubmit="simpanTransaksi(event)">
+
+<div class="section-label">01. Pelanggan</div>
+
+<div class="customer-row">
+
+<div class="field">
+
+<label for="pelangganSearch">Cari Pelanggan <span class="required">*</span></label>
+
+<div class="search-select" id="pelangganSearchBox">
+<div class="search-input-wrap">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input id="pelangganSearch" type="text" placeholder="Cari nama, no. HP, atau NIK..." autocomplete="off" required oninput="cariPelanggan()" onfocus="cariPelanggan">
+<button type="button" class="search-clear" id="pelangganClear" onclick="clearPelangganSearch()">
+<i class="fa-solid fa-xmark"></i>
+</button>
+</div>
+<div id="pelangganResults" class="search-results"></div>
+<input type="hidden" id="pelanggan">
+</div>
+
+<small style="display:block;margin-top:6px;color:var(--muted);font-size:10px">
+Ketik nama, nomor HP, atau NIK untuk mencari pelanggan.
+</small>
+
+</div>
+
+<button type="button" class="btn btn-primary" onclick="bukaModalPelanggan()">
+<i class="fa-solid fa-user-plus"></i> Pelanggan Baru
+</button>
+
+</div>
+
+<div id="customerInfo" class="customer-info">
+<strong id="customerInfoName">-</strong><br>
+<span id="customerInfoID">ID: -</span><br>
+<span id="customerInfoTanggalDaftar">Tanggal Daftar: -</span><br>
+<span id="customerInfoPhone">No. HP: -</span><br>
+<span id="customerInfoNIK">NIK: -</span><br>
+<span id="customerInfoPekerjaan">Pekerjaan: -</span><br>
+<span id="customerInfoAddress">Alamat: -</span><br>
+<span id="customerInfoCatatan">Catatan: -</span>
+</div>
+
+<div class="divider"></div>
+
+<div class="section-label">
+02. Produk
+<span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0">
+(maksimal 5 jenis/type)
+</span>
+</div>
+
+<div id="productList" class="product-list"></div>
+
+<button type="button" id="addProductBtn" class="btn btn-outline" style="margin-top:12px" onclick="tambahProdukBaris()">
+<i class="fa-solid fa-plus"></i> Tambah Produk
+</button>
+
+<div class="product-total-box">
+<span><i class="fa-solid fa-calculator"></i> TOTAL HARGA JUAL KREDIT</span>
+<strong id="productGrandTotal">Rp 0</strong>
+</div>
+
+<div class="divider"></div>
+
+<div class="section-label">03. Skema Kredit</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label for="hargaJual">Harga Jual Total <span class="required">*</span></label>
+<input type="number" id="hargaJual" min="0" value="0" readonly>
+</div>
+
+<div class="field">
+<label for="uangMuka">Uang Muka / DP</label>
+<input type="number" id="uangMuka" min="0" value="0" oninput="hitung()">
+</div>
+
+<div class="field">
+<label for="jenisAngsuran">Jenis Angsuran <span class="required">*</span></label>
+<select id="jenisAngsuran" required onchange="filterTenor()">
+<option value="">-- Pilih jenis --</option>
+<option value="harian">Harian</option>
+<option value="mingguan">Mingguan</option>
+<option value="bulanan">Bulanan</option>
+</select>
+</div>
+
+<div class="field">
+<label for="tenor">Tenor Kredit <span class="required">*</span></label>
+<select id="tenor" required onchange="hitung()">
+<option value="">-- Pilih jenis angsuran terlebih dahulu --</option>
+</select>
+</div>
+
+<div class="field">
+<label for="tanggalMulai">Tanggal Mulai Kredit <span class="required">*</span></label>
+<input type="date" id="tanggalMulai" required onchange="hitung()">
+</div>
+
+</div>
+
+<div class="divider"></div>
+
+<div class="section-label">04. Perhitungan</div>
+
+<div class="calc-box">
+
+<div class="calc-row">
+<span>Total produk</span>
+<strong id="calcJumlahJenis">0 jenis / 0 unit</strong>
+</div>
+
+<div class="calc-row">
+<span>Total harga jual</span>
+<strong id="calcTotalHarga">Rp 0</strong>
+</div>
+
+<div class="calc-row">
+<span>DP</span>
+<strong id="calcDP">Rp 0</strong>
+</div>
+
+<div class="calc-row">
+<span>Pokok kredit</span>
+<strong id="calcPokok">Rp 0</strong>
+</div>
+
+<div class="calc-row">
+<span>Bunga</span>
+<strong id="calcBunga">Rp 0 (0%)</strong>
+</div>
+
+<div class="calc-row">
+<span>Biaya admin</span>
+<strong id="calcAdmin">Rp 0</strong>
+</div>
+
+<div class="calc-row total">
+<span>Total kredit</span>
+<strong id="calcTotalKredit">Rp 0</strong>
+</div>
+
+<div class="calc-row">
+<span>Angsuran per periode</span>
+<strong id="calcAngsuran">Rp 0</strong>
+</div>
+
+</div>
+
+<div class="divider"></div>
+
+<div class="section-label">05. Catatan</div>
+
+<div class="field">
+<label for="catatan">Catatan Transaksi</label>
+<textarea id="catatan" placeholder="Contoh: Barang dikirim tanggal..."></textarea>
+</div>
+
+<div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+<button type="button" class="btn btn-outline" onclick="resetForm()">
+<i class="fa-solid fa-rotate-left"></i> Reset
+</button>
+
+<button type="submit" class="btn btn-primary">
+<i class="fa-solid fa-floppy-disk"></i> Simpan Transaksi
+</button>
+</div>
+
+</form>
+
+<div class="schedule" id="scheduleWrap" style="display:none">
+<div class="section-label">Jadwal Angsuran</div>
+
+<div class="card" style="box-shadow:none;border-radius:12px">
+<table>
+<thead>
+<tr>
+<th>Ke</th>
+<th>Jatuh Tempo</th>
+<th>Tagihan</th>
+<th>Terbayar</th>
+<th>Sisa</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="scheduleBody"></tbody>
+</table>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="card summary-card">
+
+<div class="card-header">
+<div>
+<h2><i class="fa-solid fa-calculator" style="color:var(--primary);margin-right:7px"></i>Ringkasan Kredit</h2>
+<p>Perhitungan berubah otomatis.</p>
+</div>
+</div>
+
+<div class="card-body">
+
+<div id="summaryEmpty" class="empty">
+<i class="fa-solid fa-file-invoice-dollar"></i>
+<div>Pilih pelanggan, produk, dan tenor untuk melihat ringkasan.</div>
+</div>
+
+<div id="summaryContent" style="display:none">
+
+<div class="summary-list">
+
+<div class="summary-item">
+<span>Pelanggan</span>
+<strong id="sumPelanggan">-</strong>
+</div>
+
+<div class="summary-item" style="display:block">
+<span>Produk</span>
+<div id="sumProduk" class="summary-products"></div>
+</div>
+
+<div class="summary-item">
+<span>Total harga</span>
+<strong id="sumHarga">Rp 0</strong>
+</div>
+
+<div class="summary-item">
+<span>DP</span>
+<strong id="sumDP">Rp 0</strong>
+</div>
+
+<div class="summary-item">
+<span>Tenor</span>
+<strong id="sumTenor">-</strong>
+</div>
+
+<div class="summary-item">
+<span>Bunga</span>
+<strong id="sumBunga">Rp 0</strong>
+</div>
+
+<div class="summary-item">
+<span>Biaya admin</span>
+<strong id="sumAdmin">Rp 0</strong>
+</div>
+
+</div>
+
+<div class="summary-total">
+<span>Total Kredit</span>
+<strong id="sumTotalKredit">Rp 0</strong>
+</div>
+
+<div class="summary-total" style="border-top:0;padding-top:8px">
+<span>Angsuran</span>
+<strong id="sumAngsuran">Rp 0</strong>
+</div>
+
+<button type="button" class="btn btn-outline btn-block" style="margin-top:15px" onclick="lihatJadwal()">
+<i class="fa-solid fa-calendar-days"></i> Lihat Jadwal Angsuran
+</button>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+<button type="button" class="btn btn-outline btn-block" onclick="printRingkasanKredit()">
+<i class="fa-solid fa-print"></i> Cetak
+</button>
+
+<button type="button" class="btn btn-primary btn-block" onclick="savePdfRingkasan()">
+<i class="fa-solid fa-file-pdf"></i> Simpan PDF
+</button>
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</section>
+</main>
+</div>
+
+<div id="printSummaryContainer">
+<div class="print-summary-page">
+
+<div class="print-summary-header">
+<h1>KITA KREDIT</h1>
+<p>Ringkasan Kredit Pelanggan</p>
+</div>
+
+<div class="print-summary-section">
+<div class="print-summary-section-title">Informasi Pelanggan</div>
+
+<table class="print-summary-table">
+<tr>
+<td>ID Pelanggan</td>
+<td id="printPelangganID">-</td>
+</tr>
+
+<tr>
+<td>Nama Pelanggan</td>
+<td id="printPelanggan">-</td>
+</tr>
+
+<tr>
+<td>Tanggal Daftar</td>
+<td id="printTanggalDaftar">-</td>
+</tr>
+
+<tr>
+<td>NIK</td>
+<td id="printNIK">-</td>
+</tr>
+
+<tr>
+<td>No. HP</td>
+<td id="printTelepon">-</td>
+</tr>
+
+<tr>
+<td>Pekerjaan</td>
+<td id="printPekerjaan">-</td>
+</tr>
+
+<tr>
+<td>Alamat</td>
+<td id="printAlamat">-</td>
+</tr>
+</table>
+</div>
+
+<div class="print-summary-section">
+<div class="print-summary-section-title">Detail Produk</div>
+
+<table class="print-product-table">
+<thead>
+<tr>
+<th>No</th>
+<th>Produk / Type</th>
+<th>Harga</th>
+<th>Qty</th>
+<th>Subtotal</th>
+</tr>
+</thead>
+<tbody id="printProductsBody"></tbody>
+</table>
+</div>
+
+<div class="print-summary-section">
+<div class="print-summary-section-title">Detail Kredit</div>
+
+<table class="print-summary-table">
+<tr>
+<td>Total Harga Jual</td>
+<td id="printTotalHarga">Rp 0</td>
+</tr>
+
+<tr>
+<td>Uang Muka / DP</td>
+<td id="printDP">Rp 0</td>
+</tr>
+
+<tr>
+<td>Pokok Kredit</td>
+<td id="printPokok">Rp 0</td>
+</tr>
+
+<tr>
+<td>Tenor</td>
+<td id="printTenor">-</td>
+</tr>
+
+<tr>
+<td>Bunga</td>
+<td id="printBunga">Rp 0</td>
+</tr>
+
+<tr>
+<td>Biaya Admin</td>
+<td id="printAdmin">Rp 0</td>
+</tr>
+
+<tr>
+<td>Tanggal Mulai</td>
+<td id="printTanggalMulai">-</td>
+</tr>
+</table>
+
+<div class="print-summary-total">
+<div class="print-summary-total-row">
+<span>Total Kredit</span>
+<strong id="printTotalKredit">Rp 0</strong>
+</div>
+
+<div class="print-summary-total-row grand-total">
+<span>Angsuran per Periode</span>
+<strong id="printAngsuran">Rp 0</strong>
+</div>
+</div>
+</div>
+
+<div class="print-summary-section">
+<div class="print-summary-section-title">Catatan</div>
+<div id="printCatatan" style="font-size:11px;line-height:1.6;white-space:pre-wrap">-</div>
+</div>
+
+<div class="print-summary-footer">
+<span>KITA KREDIT</span>
+<span id="printTanggalCetak">-</span>
+</div>
+
+</div>
+</div>
+
+<div class="modal" id="customerModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+<h3>
+<i class="fa-solid fa-user-plus" style="color:var(--primary);margin-right:7px"></i>
+Tambah Pelanggan Baru
+</h3>
+
+<button class="close" type="button" onclick="tutupModalPelanggan()">
+<i class="fa-solid fa-xmark"></i>
+</button>
+</div>
+
+<form id="newCustomerForm" onsubmit="simpanPelangganBaru(event)">
+
+<div class="modal-body">
+
+<div class="form-grid">
+
+<div class="field full">
+<label for="newNama">Nama Pelanggan <span class="required">*</span></label>
+<input type="text" id="newNama" placeholder="Masukkan nama lengkap" required>
+</div>
+
+<div class="field">
+<label for="newTelepon">No. HP / WhatsApp</label>
+<input type="tel" id="newTelepon" placeholder="08xxxxxxxxxx">
+</div>
+
+<div class="field">
+<label for="newNik">NIK / Identitas</label>
+<input type="text" id="newNik" maxlength="16" inputmode="numeric" placeholder="Masukkan NIK">
+</div>
+
+<div class="field">
+<label for="newPekerjaan">Pekerjaan</label>
+<input type="text" id="newPekerjaan" placeholder="Contoh: Karyawan, Wiraswasta">
+</div>
+
+<div class="field full">
+<label for="newAlamat">Alamat</label>
+<textarea id="newAlamat" placeholder="Alamat pelanggan"></textarea>
+</div>
+
+<div class="field full">
+<label for="newCatatan">
+Catatan Pelanggan
+<span style="color:var(--muted);font-weight:500">(permanen)</span>
+</label>
+<textarea id="newCatatan" placeholder="Catatan yang tersimpan pada data pelanggan"></textarea>
+</div>
+
+</div>
+</div>
+
+<div class="modal-footer">
+<button type="button" class="btn btn-outline" onclick="tutupModalPelanggan()">Batal</button>
+
+<button type="submit" class="btn btn-primary">
+<i class="fa-solid fa-user-check"></i> Simpan & Pilih
+</button>
+</div>
+
+</form>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const LOGIN_KEY="isLoggedIn",
+USER_KEY="username",
+CUSTOMER_KEY="pelanggan",
+PRODUCT_KEY="produk",
+TRANSACTION_KEY="transaksi",
+SETTINGS_KEY="pengaturanKredit",
+TENOR_KEY="tenorKredit";
+
+let pelanggan=[],
+produk=[],
+tenorKredit=[],
+pengaturan={},
+currentSchedule=[],
+productItems=[],
+productRowCounter=0;
+
+document.addEventListener("DOMContentLoaded",init);
+
+function init(){
+
+if(sessionStorage.getItem(LOGIN_KEY)!=="true"){
+window.location.href="index.html";
+return;
+}
+
+document.getElementById("topUsername").textContent=
+sessionStorage.getItem(USER_KEY)||"Admin";
+
+pelanggan=readArray(CUSTOMER_KEY);
+produk=readArray(PRODUCT_KEY);
+tenorKredit=readArray(TENOR_KEY);
+pengaturan=readObject(SETTINGS_KEY);
+
+setTanggalHariIni();
+renderPelanggan();
+renderTenor();
+
+productItems=[];
+tambahProdukBaris();
+hitung();
+}
+
+function readArray(key){
+try{
+const v=JSON.parse(localStorage.getItem(key)||"[]");
+return Array.isArray(v)?v:[];
+}catch{
+return[];
+}
+}
+
+function readObject(key){
+try{
+const v=JSON.parse(localStorage.getItem(key)||"{}");
+return v&&typeof v==="object"?v:{};
+}catch{
+return{};
+}
+}
+
+function setTanggalHariIni(){
+
+const n=new Date();
+const d=new Date(n.getTime()-n.getTimezoneOffset()*60000);
+
+document.getElementById("tanggalMulai").value=
+d.toISOString().slice(0,10);
+}
+
+function escapeHtml(v){
+return String(v??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[c]));
+}
+
+function getHargaJual(p){
+return Number(p?.hargaJual??p?.harga??p?.price??0);
+}
+
+function getStok(p){
+return Number(p?.stok??p?.stock??0);
+}
+
+function getNamaProduk(p){
+return p?.nama||p?.namaProduk||p?.name||"Tanpa Nama";
+}
+
+function getProdukId(p,index=-1){
+return String(
+p?.id||
+p?.kode||
+(index>=0?`PROD-${String(index+1).padStart(4,"0")}`:"")
+);
+}
+
+function findProduk(id){
+return produk.find((p,i)=>getProdukId(p,i)===String(id));
+}
+
+function getNamaPelanggan(p){
+return p?.nama||p?.namaPelanggan||p?.name||"Tanpa Nama";
+}
+
+function getPelangganId(p,index=-1){
+
+return String(
+p?.id||
+p?.kode||
+(index>=0?`PLG-${String(index+1).padStart(4,"0")}`:"")
+);
+
+}
+
+function findPelanggan(id){
+return pelanggan.find((p,i)=>getPelangganId(p,i)===String(id));
+}
+
+/* =========================================================
+   FORMAT TANGGAL DAFTAR PELANGGAN
+   ========================================================= */
+
+function formatTanggalDaftar(v){
+
+if(!v)return"-";
+
+const d=new Date(v);
+
+if(isNaN(d.getTime()))return"-";
+
+return d.toLocaleDateString("id-ID",{
+day:"2-digit",
+month:"2-digit",
+year:"numeric"
+});
+
+}
+
+function findTenor(id){
+return tenorKredit.find(
+(t,i)=>String(t.id||`TEN-${String(i+1).padStart(4,"0")}`)===String(id)
+);
+}
+
+function formatRupiah(v){
+return new Intl.NumberFormat("id-ID",{
+style:"currency",
+currency:"IDR",
+maximumFractionDigits:0
+}).format(Number(v||0));
+}
+
+function roundMoney(v){
+return Math.round(Number(v||0));
+}
+
+function formatPercent(v){
+const n=Number(v||0);
+return Number.isInteger(n)?`${n}%`:`${n.toFixed(2)}%`;
+}
+
+function normalizeJenis(v){
+
+const t=String(v||"").toLowerCase().trim();
+
+if(t.includes("minggu"))return"mingguan";
+if(t.includes("hari"))return"harian";
+
+return"bulanan";
+}
+
+function getBungaTenor(t){
+return t?
+Number(
+t.bunga??
+t.persentaseBunga??
+t.interest??
+pengaturan?.kredit?.bungaDefault??
+0
+):0;
+}
+
+function getBiayaAdmin(){
+return Number(
+pengaturan?.kredit?.biayaAdmin??
+pengaturan?.kredit?.admin??
+0
+);
+}
+
+function renderPelanggan(){
+
+document.getElementById("pelangganSearch").value="";
+document.getElementById("pelanggan").value="";
+document.getElementById("pelangganResults").classList.remove("show");
+
+updatePelangganClear();
+}
+
+function cariPelanggan(){
+
+const input=document.getElementById("pelangganSearch");
+const results=document.getElementById("pelangganResults");
+const kw=input.value.trim().toLowerCase();
+
+const list=pelanggan.filter((p,i)=>
+`${getNamaPelanggan(p)}
+${p.telepon||p.noHp||p.noTelepon||p.whatsapp||""}
+${p.nik||p.NIK||""}
+${getPelangganId(p,i)}`
+.toLowerCase()
+.includes(kw)
+).slice(0,30);
+
+results.innerHTML="";
+
+if(!list.length){
+
+results.innerHTML=`
+<div class="search-empty">
+<i class="fa-solid fa-user-slash"></i>
+Pelanggan tidak ditemukan.
+</div>`;
+
+results.classList.add("show");
+return;
+}
+
+list.forEach(p=>{
+
+const id=getPelangganId(
+p,
+pelanggan.indexOf(p)
+);
+
+const el=document.createElement("div");
+
+el.className="search-result";
+
+el.innerHTML=`
+<div class="search-result-name">
+<i class="fa-solid fa-user" style="margin-right:6px;color:var(--primary)"></i>
+${escapeHtml(getNamaPelanggan(p))}
+</div>
+
+<div class="search-result-meta">
+
+<span>
+<i class="fa-solid fa-id-card"></i>
+${escapeHtml(id)}
+</span>
+
+<span>
+<i class="fa-solid fa-phone"></i>
+${escapeHtml(
+p.telepon||
+p.noHp||
+p.noTelepon||
+p.whatsapp||
+"No. HP -"
+)}
+</span>
+
+<span>
+<i class="fa-solid fa-address-card"></i>
+${escapeHtml(p.nik||p.NIK||"NIK -")}
+</span>
+
+</div>
+`;
+
+el.onclick=()=>pilihPelangganDariHasil(id);
+
+results.appendChild(el);
+
+});
+
+results.classList.add("show");
+}
+
+function pilihPelangganDariHasil(id){
+
+const p=findPelanggan(id);
+
+if(!p)return;
+
+document.getElementById("pelanggan").value=id;
+
+document.getElementById("pelangganSearch").value=
+getNamaPelanggan(p);
+
+document.getElementById("pelangganResults")
+.classList.remove("show");
+
+updatePelangganClear();
+
+pilihPelanggan();
+}
+
+function pilihPelanggan(){
+
+const p=findPelanggan(
+document.getElementById("pelanggan").value
+);
+
+const box=document.getElementById("customerInfo");
+
+if(!p){
+
+box.classList.remove("show");
+hitung();
+return;
+}
+
+document.getElementById("customerInfoName").textContent=
+getNamaPelanggan(p);
+
+document.getElementById("customerInfoID").textContent=
+"ID Pelanggan: "+getPelangganId(p);
+
+document.getElementById("customerInfoTanggalDaftar").textContent=
+"Tanggal Daftar: "+
+formatTanggalDaftar(
+p.tanggalDaftar||
+p.dibuatPada||
+p.createdAt||
+p.tanggalDibuat
+);
+
+document.getElementById("customerInfoPhone").textContent=
+"No. HP: "+
+(
+p.telepon||
+p.noHp||
+p.noTelepon||
+p.whatsapp||
+"Belum diisi"
+);
+
+document.getElementById("customerInfoNIK").textContent=
+"NIK: "+(p.nik||p.NIK||"Belum diisi");
+
+document.getElementById("customerInfoPekerjaan").textContent=
+"Pekerjaan: "+
+(
+p.pekerjaan||
+p.profesi||
+"Belum diisi"
+);
+
+document.getElementById("customerInfoAddress").textContent=
+"Alamat: "+
+(
+p.alamat||
+p.address||
+"Belum diisi"
+);
+
+document.getElementById("customerInfoCatatan").textContent=
+"Catatan: "+
+(
+p.catatan||
+"Tidak ada catatan"
+);
+
+box.classList.add("show");
+
+hitung();
+}
+
+function clearPelangganSearch(){
+
+document.getElementById("pelangganSearch").value="";
+document.getElementById("pelanggan").value="";
+
+document.getElementById("pelangganResults")
+.classList.remove("show");
+
+document.getElementById("customerInfo")
+.classList.remove("show");
+
+updatePelangganClear();
+hitung();
+}
+
+function updatePelangganClear(){
+
+const b=document.getElementById("pelangganClear");
+
+b.style.display=
+document.getElementById("pelangganSearch").value
+?"block"
+:"none";
+}
+
+function tambahProdukBaris(){
+
+if(productItems.length>=5){
+
+showToast(
+"Maksimal 5 jenis/type produk dalam satu transaksi."
+);
+
+return;
+}
+
+productRowCounter++;
+
+productItems.push({
+uid:productRowCounter,
+productId:"",
+qty:1
+});
+
+renderProductRows();
+hitung();
+}
+
+function hapusProdukBaris(uid){
+
+if(productItems.length<=1){
+
+showToast(
+"Minimal satu baris produk harus tersedia."
+);
+
+return;
+}
+
+productItems=productItems.filter(
+x=>x.uid!==uid
+);
+
+renderProductRows();
+hitung();
+}
+
+function renderProductRows(){
+
+const wrap=document.getElementById("productList");
+
+wrap.innerHTML="";
+
+productItems.forEach((item,index)=>{
+
+const row=document.createElement("div");
+
+row.className="product-row";
+row.dataset.uid=item.uid;
+
+row.innerHTML=`
+
+<div class="product-row-head">
+
+<span class="product-number">
+<i class="fa-solid fa-box"></i>
+Produk ${index+1} dari 5
+</span>
+
+<button type="button"
+class="btn btn-danger btn-small"
+onclick="hapusProdukBaris(${item.uid})">
+
+<i class="fa-solid fa-trash"></i>
+Hapus
+
+</button>
+
+</div>
+
+<div class="product-grid">
+
+<div class="field">
+
+<label>
+Cari Produk / Type
+<span class="required">*</span>
+</label>
+
+<div class="search-select">
+
+<div class="search-input-wrap">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input
+id="prodSearch_${item.uid}"
+type="text"
+placeholder="Cari nama atau kode produk..."
+autocomplete="off"
+value="${escapeHtml(
+item.productId?
+getNamaProduk(findProduk(item.productId)):
+""
+)}"
+oninput="cariProdukBaris(${item.uid})"
+onfocus="cariProdukBaris(${item.uid})">
+
+<button
+type="button"
+class="search-clear"
+id="prodClear_${item.uid}"
+onclick="clearProdukBaris(${item.uid})">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+<div
+id="prodResults_${item.uid}"
+class="search-results">
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>
+Jumlah
+<span class="required">*</span>
+</label>
+
+<input
+type="number"
+min="1"
+step="1"
+value="${Math.max(1,Number(item.qty||1))}"
+oninput="ubahQtyProduk(${item.uid},this.value)">
+
+</div>
+
+<div class="field">
+
+<label>Subtotal</label>
+
+<div
+class="product-subtotal"
+id="subtotal_${item.uid}">
+Rp 0
+</div>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline remove-product"
+title="Hapus produk"
+onclick="hapusProdukBaris(${item.uid})">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+<div
+id="selectedInfo_${item.uid}"
+class="product-selected-info"
+style="display:none">
+</div>
+
+`;
+
+wrap.appendChild(row);
+
+updateProductRowUI(item.uid);
+
+});
+
+document.getElementById("addProductBtn").style.display=
+productItems.length>=5
+?"none"
+:"inline-flex";
+}
+
+function updateProductRowUI(uid){
+
+const item=productItems.find(
+x=>x.uid===uid
+);
+
+const p=item?
+findProduk(item.productId):
+null;
+
+const input=document.getElementById(
+`prodSearch_${uid}`
+);
+
+const clear=document.getElementById(
+`prodClear_${uid}`
+);
+
+const sub=document.getElementById(
+`subtotal_${uid}`
+);
+
+const info=document.getElementById(
+`selectedInfo_${uid}`
+);
+
+if(!input)return;
+
+clear.style.display=
+input.value
+?"block"
+:"none";
+
+if(p){
+
+const qty=Math.max(
+1,
+Number(item.qty||1)
+);
+
+const stock=getStok(p);
+
+const subtotal=
+getHargaJual(p)*qty;
+
+sub.textContent=
+formatRupiah(subtotal);
+
+info.style.display="block";
+
+info.innerHTML=`
+<strong>${escapeHtml(getNamaProduk(p))}</strong>
+· Harga ${formatRupiah(getHargaJual(p))}
+· Stok ${stock}
+·
+<span class="${qty>stock?"stock-warning":"stock-ok"}">
+${qty>stock?"Stok tidak cukup":"Stok mencukupi"}
+</span>
+`;
+
+}else{
+
+sub.textContent="Rp 0";
+info.style.display="none";
+}
+}
+
+function cariProdukBaris(uid){
+
+const item=productItems.find(
+x=>x.uid===uid
+);
+
+if(!item)return;
+
+const input=document.getElementById(
+`prodSearch_${uid}`
+);
+
+const results=document.getElementById(
+`prodResults_${uid}`
+);
+
+const kw=input.value.trim().toLowerCase();
+
+const selectedIds=
+productItems
+.filter(x=>x.uid!==uid&&x.productId)
+.map(x=>String(x.productId));
+
+const list=produk.filter((p,i)=>{
+
+const id=getProdukId(p,i);
+
+return !selectedIds.includes(id)&&
+`${getNamaProduk(p)} ${p.kode||p.code||id}`
+.toLowerCase()
+.includes(kw);
+
+}).slice(0,30);
+
+results.innerHTML="";
+
+if(!list.length){
+
+results.innerHTML=`
+<div class="search-empty">
+<i class="fa-solid fa-box-open"></i>
+Produk tidak ditemukan atau sudah dipilih.
+</div>`;
+
+results.classList.add("show");
+
+return;
+}
+
+list.forEach(p=>{
+
+const id=getProdukId(
+p,
+produk.indexOf(p)
+);
+
+const el=document.createElement("div");
+
+el.className="search-result";
+
+el.innerHTML=`
+<div class="search-result-name">
+${escapeHtml(getNamaProduk(p))}
+</div>
+
+<div class="search-result-meta">
+
+<span>
+<i class="fa-solid fa-barcode"></i>
+${escapeHtml(p.kode||p.code||id)}
+</span>
+
+<span class="search-result-stock">
+<i class="fa-solid fa-box"></i>
+Stok ${getStok(p)}
+</span>
+
+<span>
+<i class="fa-solid fa-tag"></i>
+${formatRupiah(getHargaJual(p))}
+</span>
+
+</div>
+`;
+
+el.onclick=()=>pilihProdukBaris(
+uid,
+id
+);
+
+results.appendChild(el);
+
+});
+
+results.classList.add("show");
+}
+
+function pilihProdukBaris(uid,id){
+
+const item=productItems.find(
+x=>x.uid===uid
+);
+
+const p=findProduk(id);
+
+if(!item||!p)return;
+
+item.productId=String(id);
+
+item.qty=Math.max(
+1,
+Number(item.qty||1)
+);
+
+document.getElementById(
+`prodSearch_${uid}`
+).value=getNamaProduk(p);
+
+document.getElementById(
+`prodResults_${uid}`
+).classList.remove("show");
+
+updateProductRowUI(uid);
+
+hitung();
+}
+
+function clearProdukBaris(uid){
+
+const item=productItems.find(
+x=>x.uid===uid
+);
+
+if(!item)return;
+
+item.productId="";
+item.qty=1;
+
+document.getElementById(
+`prodSearch_${uid}`
+).value="";
+
+document.getElementById(
+`prodResults_${uid}`
+).classList.remove("show");
+
+updateProductRowUI(uid);
+
+hitung();
+}
+
+function ubahQtyProduk(uid,value){
+
+const item=productItems.find(
+x=>x.uid===uid
+);
+
+if(!item)return;
+
+item.qty=Math.max(
+1,
+Number(value||1)
+);
+
+updateProductRowUI(uid);
+hitung();
+}
+
+function getSelectedProducts(){
+
+return productItems.map(item=>{
+
+const p=findProduk(item.productId);
+
+const qty=Math.max(
+1,
+Number(item.qty||1)
+);
+
+return p?
+{
+item,
+p,
+qty,
+hargaSatuan:getHargaJual(p),
+subtotal:getHargaJual(p)*qty
+}
+:null;
+
+}).filter(Boolean);
+
+}
+
+function getTotalHarga(){
+
+return getSelectedProducts()
+.reduce(
+(sum,x)=>sum+x.subtotal,
+0
+);
+}
+
+function renderTenor(){
+filterTenor();
+}
+
+function filterTenor(){
+
+const select=document.getElementById("tenor");
+
+const jenis=document.getElementById(
+"jenisAngsuran"
+).value;
+
+const current=select.value;
+
+select.innerHTML=
+'<option value="">-- Pilih tenor --</option>';
+
+if(!jenis){
+
+select.innerHTML=
+'<option value="">-- Pilih jenis angsuran terlebih dahulu --</option>';
+
+hitung();
+
+return;
+}
+
+const aktif=tenorKredit.filter(
+t=>
+t.aktif!==false&&
+normalizeJenis(t.jenisAngsuran)===
+normalizeJenis(jenis)
+);
+
+aktif.forEach((t,i)=>{
+
+const id=String(
+t.id||
+`TEN-${String(i+1).padStart(4,"0")}`
+);
+
+const periodo=Number(
+t.jumlahPeriode||
+t.periode||
+0
+);
+
+const opt=document.createElement("option");
+
+opt.value=id;
+
+opt.textContent=
+`${t.nama||periodo+" periode"} — ${periodo}x ${normalizeJenis(jenis)} — Bunga ${formatPercent(t.bunga||0)}`;
+
+select.appendChild(opt);
+
+});
+
+if(!aktif.length){
+
+const o=document.createElement("option");
+
+o.textContent=
+`Belum ada tenor ${normalizeJenis(jenis)}. Atur di Pengaturan.`;
+
+o.disabled=true;
+
+select.appendChild(o);
+
+}else if(
+aktif.some(
+t=>String(t.id)===current
+)
+){
+
+select.value=current;
+}
+
+hitung();
+}
+
+function hitung(){
+
+const customer=findPelanggan(
+document.getElementById("pelanggan").value
+);
+
+const tenor=findTenor(
+document.getElementById("tenor").value
+);
+
+const items=getSelectedProducts();
+
+const totalHarga=getTotalHarga();
+
+const totalUnit=items.reduce(
+(s,x)=>s+x.qty,
+0
+);
+
+const dpInput=Math.max(
+0,
+Number(
+document.getElementById("uangMuka").value||0
+)
+);
+
+const dp=Math.min(
+dpInput,
+totalHarga
+);
+
+const pokok=Math.max(
+0,
+totalHarga-dp
+);
+
+const bungaPercent=getBungaTenor(
+tenor
+);
+
+const bunga=
+pokok*bungaPercent/100;
+
+const admin=getBiayaAdmin();
+
+const totalKredit=
+pokok+bunga+admin;
+
+const periode=tenor?
+Number(
+tenor.jumlahPeriode||
+tenor.periode||
+0
+):0;
+
+const angsuran=
+periode>0?
+totalKredit/periode:
+0;
+
+document.getElementById("hargaJual").value=
+roundMoney(totalHarga);
+
+document.getElementById(
+"productGrandTotal"
+).textContent=
+formatRupiah(totalHarga);
+
+document.getElementById(
+"calcJumlahJenis"
+).textContent=
+`${items.length} jenis / ${totalUnit} unit`;
+
+document.getElementById(
+"calcTotalHarga"
+).textContent=
+formatRupiah(totalHarga);
+
+document.getElementById(
+"calcDP"
+).textContent=
+formatRupiah(dp);
+
+document.getElementById(
+"calcPokok"
+).textContent=
+formatRupiah(pokok);
+
+document.getElementById(
+"calcBunga"
+).textContent=
+`${formatRupiah(bunga)} (${formatPercent(bungaPercent)})`;
+
+document.getElementById(
+"calcAdmin"
+).textContent=
+formatRupiah(admin);
+
+document.getElementById(
+"calcTotalKredit"
+).textContent=
+formatRupiah(totalKredit);
+
+document.getElementById(
+"calcAngsuran"
+).textContent=
+formatRupiah(angsuran);
+
+document.getElementById(
+"sumPelanggan"
+).textContent=
+customer?
+`${getPelangganId(customer)} - ${getNamaPelanggan(customer)}`
+:"-";
+
+const sumProduk=
+document.getElementById("sumProduk");
+
+sumProduk.innerHTML=
+items.length?
+items.map(x=>`
+<div class="summary-product">
+<span>${escapeHtml(getNamaProduk(x.p))} × ${x.qty}</span>
+<strong>${formatRupiah(x.subtotal)}</strong>
+</div>
+`).join("")
+:
+"<span style='font-size:11px;color:var(--muted)'>Belum ada produk</span>";
+
+document.getElementById(
+"sumHarga"
+).textContent=formatRupiah(totalHarga);
+
+document.getElementById(
+"sumDP"
+).textContent=formatRupiah(dp);
+
+document.getElementById(
+"sumTenor"
+).textContent=
+tenor?
+`${tenor.nama||periode+" periode"} — ${normalizeJenis(tenor.jenisAngsuran)}`
+:"-";
+
+document.getElementById(
+"sumBunga"
+).textContent=
+formatRupiah(bunga);
+
+document.getElementById(
+"sumAdmin"
+).textContent=
+formatRupiah(admin);
+
+document.getElementById(
+"sumTotalKredit"
+).textContent=
+formatRupiah(totalKredit);
+
+document.getElementById(
+"sumAngsuran"
+).textContent=
+formatRupiah(angsuran);
+
+const valid=
+!!customer&&
+items.length>0&&
+items.length<=5&&
+!!tenor&&
+periode>0&&
+totalHarga>0;
+
+document.getElementById(
+"summaryEmpty"
+).style.display=
+valid?"none":"block";
+
+document.getElementById(
+"summaryContent"
+).style.display=
+valid?"block":"none";
+
+currentSchedule=
+valid?
+buatJadwal(
+angsuran,
+periode,
+document.getElementById("tanggalMulai").value,
+tenor.jenisAngsuran
+):
+[];
+
+return{
+customer,
+items,
+tenor,
+totalHarga,
+dp,
+pokok,
+bungaPercent,
+bunga,
+admin,
+totalKredit,
+periode,
+angsuran,
+totalUnit
+};
+}
+
+function buatJadwal(
+angsuran,
+periode,
+tanggalMulai,
+jenisAngsuran
+){
+
+if(!tanggalMulai||!periode)return[];
+
+const out=[];
+const start=parseDate(tanggalMulai);
+const jenis=normalizeJenis(jenisAngsuran);
+
+for(let i=1;i<=periode;i++){
+
+const d=new Date(start);
+
+if(jenis==="harian")
+d.setDate(d.getDate()+i);
+
+else if(jenis==="mingguan")
+d.setDate(d.getDate()+i*7);
+
+else
+d.setMonth(d.getMonth()+i);
+
+out.push({
+ke:i,
+jatuhTempo:toDateInput(d),
+tagihan:roundMoney(angsuran),
+terbayar:0,
+status:"belum_bayar"
+});
+}
+
+return out;
+}
+
+function lihatJadwal(){
+
+const h=hitung();
+
+if(!h.tenor||!h.periode){
+
+showToast(
+"Pilih tenor kredit terlebih dahulu."
+);
+
+return;
+}
+
+const tb=document.getElementById(
+"scheduleBody"
+);
+
+tb.innerHTML="";
+
+currentSchedule.forEach(s=>{
+
+const tr=document.createElement("tr");
+
+tr.innerHTML=`
+<td>${s.ke}</td>
+<td>${formatTanggal(s.jatuhTempo)}</td>
+<td>${formatRupiah(s.tagihan)}</td>
+<td>${formatRupiah(s.terbayar)}</td>
+<td>${formatRupiah(s.tagihan-s.terbayar)}</td>
+<td>
+<span class="badge badge-blue">
+Belum Bayar
+</span>
+</td>
+`;
+
+tb.appendChild(tr);
+
+});
+
+document.getElementById(
+"scheduleWrap"
+).style.display="block";
+
+document.getElementById(
+"scheduleWrap"
+).scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+}
+
+function simpanTransaksi(event){
+
+event.preventDefault();
+
+const h=hitung();
+
+if(!h.customer){
+
+showToast(
+"Silakan pilih pelanggan atau tambah pelanggan baru."
+);
+
+return;
+}
+
+if(!h.items.length){
+
+showToast(
+"Silakan pilih minimal satu produk."
+);
+
+return;
+}
+
+if(h.items.length>5){
+
+showToast(
+"Maksimal 5 jenis/type produk."
+);
+
+return;
+}
+
+if(!h.tenor||h.periode<=0){
+
+showToast(
+"Tenor kredit belum dipilih atau belum diatur."
+);
+
+return;
+}
+
+if(h.totalHarga<=0){
+
+showToast(
+"Total harga produk harus lebih dari 0."
+);
+
+return;
+}
+
+for(const x of h.items){
+
+const stock=getStok(x.p);
+
+if(x.qty>stock){
+
+showToast(
+`Stok ${getNamaProduk(x.p)} tidak cukup. Tersedia ${stock}, dibutuhkan ${x.qty}.`
+);
+
+return;
+}
+}
+
+if(h.dp>h.totalHarga){
+
+showToast(
+"DP tidak boleh lebih besar dari total harga."
+);
+
+return;
+}
+
+const transaksi=readArray(
+TRANSACTION_KEY
+);
+
+const noTransaksi=
+generateNumber(
+transaksi,
+"TRX"
+);
+
+const tanggal=
+document.getElementById(
+"tanggalMulai"
+).value;
+
+const transactionId=
+"TX-"+Date.now();
+
+const jenisAngsuran=
+normalizeJenis(
+h.tenor.jenisAngsuran
+);
+
+const productRecords=
+h.items.map(x=>({
+produkId:getProdukId(x.p),
+produkNama:getNamaProduk(x.p),
+kodeProduk:x.p.kode||x.p.code||"",
+jumlah:x.qty,
+hargaSatuan:roundMoney(x.hargaSatuan),
+subtotal:roundMoney(x.subtotal)
+}));
+
+const first=h.items[0];
+
+const namaPelanggan=
+getNamaPelanggan(h.customer);
+
+const record={
+
+id:transactionId,
+
+noTransaksi,
+
+tanggal,
+
+pelangganId:
+getPelangganId(h.customer),
+
+pelangganNama:
+namaPelanggan,
+
+pelanggan:
+namaPelanggan,
+
+pelangganTanggalDaftar:
+h.customer.tanggalDaftar||
+h.customer.dibuatPada||
+h.customer.createdAt||
+h.customer.tanggalDibuat||
+"",
+
+pelangganNIK:
+h.customer.nik||
+h.customer.NIK||
+"",
+
+pelangganPekerjaan:
+h.customer.pekerjaan||
+h.customer.profesi||
+"",
+
+pelangganAlamat:
+h.customer.alamat||
+h.customer.address||
+"",
+
+pelangganCatatan:
+h.customer.catatan||
+"",
+
+produkList:
+productRecords,
+
+jumlahJenisProduk:
+productRecords.length,
+
+totalUnit:
+h.totalUnit,
+
+produkId:
+getProdukId(first.p),
+
+produkNama:
+getNamaProduk(first.p),
+
+produk:
+getNamaProduk(first.p),
+
+jumlah:
+first.qty,
+
+hargaSatuan:
+roundMoney(first.hargaSatuan),
+
+totalHarga:
+roundMoney(h.totalHarga),
+
+hargaJual:
+roundMoney(h.totalHarga),
+
+dp:
+roundMoney(h.dp),
+
+pokokKredit:
+roundMoney(h.pokok),
+
+bungaPersen:
+h.bungaPercent,
+
+bunga:
+roundMoney(h.bunga),
+
+biayaAdmin:
+roundMoney(h.admin),
+
+totalKredit:
+roundMoney(h.totalKredit),
+
+tenorId:
+String(h.tenor.id||""),
+
+tenorNama:
+h.tenor.nama||`${h.periode} periode`,
+
+periode:
+h.periode,
+
+jumlahPeriode:
+h.periode,
+
+jenisAngsuran,
+
+angsuranPerPeriode:
+roundMoney(h.angsuran),
+
+tanggalMulai:
+tanggal,
+
+totalBayar:0,
+
+sisaTagihan:
+roundMoney(h.totalKredit),
+
+status:"aktif",
+
+catatan:
+document.getElementById("catatan")
+.value.trim(),
+
+jadwal:
+currentSchedule.map(
+s=>({...s})
+),
+
+dibuatPada:
+new Date().toISOString()
+
+};
+
+transaksi.push(record);
+
+localStorage.setItem(
+TRANSACTION_KEY,
+JSON.stringify(transaksi)
+);
+
+h.items.forEach(x=>{
+
+const idx=produk.findIndex(
+p=>getProdukId(p)===
+getProdukId(x.p)
+);
+
+if(idx>=0){
+
+const old=getStok(
+produk[idx]
+);
+
+if("stok"in produk[idx])
+produk[idx].stok=old-x.qty;
+else
+produk[idx].stock=old-x.qty;
+
+}
+});
+
+localStorage.setItem(
+PRODUCT_KEY,
+JSON.stringify(produk)
+);
+
+showToast(
+`Transaksi ${noTransaksi} berhasil disimpan.`
+);
+
+setTimeout(()=>{
+
+if(confirm(
+"Transaksi berhasil dibuat. Apakah ingin membuka halaman Pembayaran?"
+))
+
+window.location.href=
+"pembayaran.html?transaksi="+
+encodeURIComponent(transactionId);
+
+else
+resetForm();
+
+},350);
+}
+
+function generateNumber(data,prefix){
+
+const year=new Date().getFullYear();
+
+let max=0;
+
+data.forEach(x=>{
+
+const m=
+String(x.noTransaksi||"")
+.match(
+new RegExp(
+"^"+prefix+"-"+year+"-(\\d+)$"
+)
+);
+
+if(m)
+max=Math.max(
+max,
+Number(m[1])
+);
+
+});
+
+return `${prefix}-${year}-${String(max+1).padStart(4,"0")}`;
+}
+
+/* =========================================================
+   TAMBAH PELANGGAN BARU
+   ID: PLG-0001, PLG-0002, dst.
+   TANGGAL DAFTAR: otomatis saat disimpan
+   ========================================================= */
+
+function bukaModalPelanggan(){
+
+document.getElementById(
+"newCustomerForm"
+).reset();
+
+document.getElementById(
+"customerModal"
+).classList.add("show");
+
+setTimeout(
+()=>document.getElementById("newNama").focus(),
+100
+);
+}
+
+function tutupModalPelanggan(){
+
+document.getElementById(
+"customerModal"
+).classList.remove("show");
+}
+
+function simpanPelangganBaru(e){
+
+e.preventDefault();
+
+const nama=
+document.getElementById(
+"newNama"
+).value.trim();
+
+if(!nama){
+
+showToast(
+"Nama pelanggan wajib diisi."
+);
+
+return;
+}
+
+pelanggan=readArray(
+CUSTOMER_KEY
+);
+
+/* Cari ID PLG terbesar */
+const idNumber=
+pelanggan.reduce(
+(max,p)=>{
+
+const match=
+String(p?.id||"")
+.match(/^PLG-(\d+)$/i);
+
+return match?
+Math.max(
+max,
+Number(match[1])
+):
+max;
+
+},
+0
+)+1;
+
+const id=
+"PLG-"+
+String(idNumber).padStart(4,"0");
+
+/* Tanggal dan waktu pendaftaran */
+const tanggalDaftar=
+new Date().toISOString();
+
+const telepon=
+document.getElementById(
+"newTelepon"
+).value.trim();
+
+const nik=
+document.getElementById(
+"newNik"
+).value.trim();
+
+const pekerjaan=
+document.getElementById(
+"newPekerjaan"
+).value.trim();
+
+const alamat=
+document.getElementById(
+"newAlamat"
+).value.trim();
+
+const catatan=
+document.getElementById(
+"newCatatan"
+).value.trim();
+
+pelanggan.push({
+
+id,
+
+nama,
+
+telepon,
+
+noHp:telepon,
+
+nik,
+
+pekerjaan,
+
+alamat,
+
+catatan,
+
+/* Tanggal pendaftaran pelanggan */
+tanggalDaftar,
+
+/* Tetap disimpan sebagai timestamp pembuatan */
+dibuatPada:tanggalDaftar
+
+});
+
+localStorage.setItem(
+CUSTOMER_KEY,
+JSON.stringify(pelanggan)
+);
+
+document.getElementById(
+"pelanggan"
+).value=id;
+
+document.getElementById(
+"pelangganSearch"
+).value=nama;
+
+updatePelangganClear();
+
+pilihPelanggan();
+
+tutupModalPelanggan();
+
+showToast(
+`Pelanggan "${nama}" berhasil ditambahkan dengan ID ${id}.`
+);
+}
+
+function resetForm(){
+
+document.getElementById(
+"transactionForm"
+).reset();
+
+document.getElementById(
+"pelanggan"
+).value="";
+
+document.getElementById(
+"pelangganSearch"
+).value="";
+
+document.getElementById(
+"pelangganResults"
+).classList.remove("show");
+
+document.getElementById(
+"customerInfo"
+).classList.remove("show");
+
+updatePelangganClear();
+
+productItems=[];
+productRowCounter=0;
+
+tambahProdukBaris();
+
+document.getElementById(
+"uangMuka"
+).value=0;
+
+document.getElementById(
+"jenisAngsuran"
+).value="";
+
+filterTenor();
+
+document.getElementById(
+"catatan"
+).value="";
+
+document.getElementById(
+"scheduleWrap"
+).style.display="none";
+
+currentSchedule=[];
+
+setTanggalHariIni();
+
+hitung();
+}
+
+document.addEventListener(
+"click",
+e=>{
+
+const cb=
+document.getElementById(
+"pelangganSearchBox"
+);
+
+if(cb&&!cb.contains(e.target))
+
+document.getElementById(
+"pelangganResults"
+).classList.remove("show");
+
+document.querySelectorAll(
+".search-select"
+).forEach(box=>{
+
+if(!box.contains(e.target)){
+
+const r=
+box.querySelector(
+".search-results"
+);
+
+if(r)
+r.classList.remove("show");
+
+}
+
+});
+
+}
+);
+
+document.getElementById(
+"customerModal"
+).addEventListener(
+"click",
+e=>{
+
+if(e.target===e.currentTarget)
+tutupModalPelanggan();
+
+}
+);
+
+/* =========================================================
+   DATA CETAK
+   ========================================================= */
+
+function isiDataPrintRingkasan(){
+
+const h=hitung();
+
+if(!h.customer||!h.items.length||!h.tenor){
+
+showToast(
+"Lengkapi pelanggan, produk, dan tenor terlebih dahulu."
+);
+
+return false;
+}
+
+const c=h.customer;
+
+document.getElementById(
+"printPelangganID"
+).textContent=
+getPelangganId(c);
+
+document.getElementById(
+"printPelanggan"
+).textContent=
+getNamaPelanggan(c);
+
+document.getElementById(
+"printTanggalDaftar"
+).textContent=
+formatTanggalDaftar(
+c.tanggalDaftar||
+c.dibuatPada||
+c.createdAt||
+c.tanggalDibuat
+);
+
+document.getElementById(
+"printNIK"
+).textContent=
+c.nik||c.NIK||"-";
+
+document.getElementById(
+"printTelepon"
+).textContent=
+c.telepon||
+c.noHp||
+c.noTelepon||
+c.whatsapp||
+"-";
+
+document.getElementById(
+"printPekerjaan"
+).textContent=
+c.pekerjaan||
+c.profesi||
+"-";
+
+document.getElementById(
+"printAlamat"
+).textContent=
+c.alamat||
+c.address||
+"-";
+
+const pb=
+document.getElementById(
+"printProductsBody"
+);
+
+pb.innerHTML=
+h.items.map((x,i)=>`
+
+<tr>
+
+<td>${i+1}</td>
+
+<td>${escapeHtml(
+getNamaProduk(x.p)
+)}</td>
+
+<td>${formatRupiah(
+x.hargaSatuan
+)}</td>
+
+<td>${x.qty}</td>
+
+<td>${formatRupiah(
+x.subtotal
+)}</td>
+
+</tr>
+
+`).join("");
+
+document.getElementById(
+"printTotalHarga"
+).textContent=
+formatRupiah(h.totalHarga);
+
+document.getElementById(
+"printDP"
+).textContent=
+formatRupiah(h.dp);
+
+document.getElementById(
+"printPokok"
+).textContent=
+formatRupiah(h.pokok);
+
+document.getElementById(
+"printTenor"
+).textContent=
+`${h.tenor.nama||h.periode+" periode"} — ${normalizeJenis(h.tenor.jenisAngsuran)}`;
+
+document.getElementById(
+"printBunga"
+).textContent=
+`${formatRupiah(h.bunga)} (${formatPercent(h.bungaPercent)})`;
+
+document.getElementById(
+"printAdmin"
+).textContent=
+formatRupiah(h.admin);
+
+document.getElementById(
+"printTanggalMulai"
+).textContent=
+formatTanggal(
+document.getElementById(
+"tanggalMulai"
+).value
+);
+
+document.getElementById(
+"printTotalKredit"
+).textContent=
+formatRupiah(h.totalKredit);
+
+document.getElementById(
+"printAngsuran"
+).textContent=
+`${formatRupiah(h.angsuran)} / ${normalizeJenis(h.tenor.jenisAngsuran)}`;
+
+document.getElementById(
+"printCatatan"
+).textContent=
+document.getElementById(
+"catatan"
+).value.trim()||"-";
+
+document.getElementById(
+"printTanggalCetak"
+).textContent=
+"Dicetak: "+
+new Date().toLocaleString("id-ID");
+
+return true;
+}
+
+function printRingkasanKredit(){
+
+if(!isiDataPrintRingkasan())
+return;
+
+document.body.classList.add(
+"print-summary-mode"
+);
+
+setTimeout(
+()=>window.print(),
+150
+);
+}
+
+function savePdfRingkasan(){
+
+if(!isiDataPrintRingkasan())
+return;
+
+document.body.classList.add(
+"print-summary-mode"
+);
+
+showToast(
+"Dialog cetak dibuka. Pilih 'Save as PDF' / 'Simpan sebagai PDF'."
+);
+
+setTimeout(
+()=>window.print(),
+250
+);
+}
+
+window.addEventListener(
+"afterprint",
+()=>{
+document.body.classList.remove(
+"print-summary-mode"
+);
+}
+);
+
+function parseDate(v){
+
+const [y,m,d]=
+String(v)
+.split("-")
+.map(Number);
+
+return new Date(
+y,
+m-1,
+d
+);
+}
+
+function toDateInput(d){
+
+return `${d.getFullYear()}-${String(
+d.getMonth()+1
+).padStart(2,"0")}-${String(
+d.getDate()
+).padStart(2,"0")}`;
+}
+
+function formatTanggal(v){
+
+if(!v)return"-";
+
+return parseDate(v)
+.toLocaleDateString(
+"id-ID",
+{
+day:"2-digit",
+month:"2-digit",
+year:"numeric"
+}
+);
+}
+
+function showToast(msg){
+
+const t=document.getElementById(
+"toast"
+);
+
+t.textContent=msg;
+
+t.classList.add("show");
+
+clearTimeout(
+window.__toastTimer
+);
+
+window.__toastTimer=setTimeout(
+()=>t.classList.remove("show"),
+3200
+);
+}
+
+function toggleSidebar(){
+
+document.getElementById(
+"sidebar"
+).classList.toggle("open");
+}
+
+function logout(){
+
+if(confirm(
+"Yakin ingin keluar dari KITA KREDIT?"
+)){
+
+sessionStorage.removeItem(
+LOGIN_KEY
+);
+
+sessionStorage.removeItem(
+USER_KEY
+);
+
+window.location.href=
+"index.html";
+}
+}
+
+</script>
+
+</body>
+</html>
